@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
+    "outDir": "dist/types",
+    "rootDir": "src/js",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "ES6",
+    "strict": false,
+    "skipLibCheck": true
+  },
+  "include": ["src/js/DateRangePicker.js"]
+}

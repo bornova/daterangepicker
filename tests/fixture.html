@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DateRangePicker Test Fixture</title>
+    <link rel="stylesheet" href="../dist/daterangepicker.css" />
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+    <script src="../dist/browser/daterangepicker.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 2rem;
+      }
+      #log {
+        margin-top: 1rem;
+        font-size: 0.85rem;
+        white-space: pre-wrap;
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+        min-height: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <input id="picker" type="text" placeholder="Select dates" />
+    <div id="inline-anchor"></div>
+    <div id="append-target" style="position: relative; min-height: 50px"></div>
+    <div
+      id="toggle-anchor"
+      tabindex="0"
+      style="display: inline-block; padding: 8px 16px; border: 1px solid #ccc; cursor: pointer; margin-top: 1rem"
+    >
+      Toggle Picker
+    </div>
+    <div id="log"></div>
+
+    <script>
+      // Exposed on window so Playwright tests can interact programmatically
+      window.log = []
+      function appendLog(msg) {
+        window.log.push(msg)
+        document.getElementById('log').textContent = window.log.join('\n')
+      }
+
+      window.createPicker = function (options, callback, initialValue) {
+        if (window.pickerInstance) {
+          window.pickerInstance.remove()
+          window.pickerInstance = null
+        }
+        window.log = []
+        document.getElementById('log').textContent = ''
+
+        const el = document.getElementById('picker')
+        el.value = initialValue || ''
+
+        const cb =
+          callback ||
+          function (start, end, label) {
+            appendLog('callback:' + start.toISODate() + '|' + end.toISODate() + '|' + (label || ''))
+          }
+
+        window.pickerInstance = new DateRangePicker('#picker', options || {}, cb)
+
+        // Forward all known events to the log
+        ;['show', 'hide', 'apply', 'cancel', 'clear'].forEach(function (ev) {
+          document.getElementById('picker').addEventListener(ev, function (e) {
+            const d = e.detail || {}
+            const start = d.startDate ? d.startDate.toISODate() : ''
+            const end = d.endDate ? d.endDate.toISODate() : ''
+            appendLog('event:' + ev + ':' + start + '|' + end + '|' + (d.chosenLabel || ''))
+          })
+        })
+
+        return window.pickerInstance
+      }
+
+      window.createInlinePicker = function (options) {
+        if (window.inlinePickerInstance) {
+          window.inlinePickerInstance.remove()
+          window.inlinePickerInstance = null
+        }
+        window.log = []
+        document.getElementById('log').textContent = ''
+        const el = document.getElementById('inline-anchor')
+        window.inlinePickerInstance = new DateRangePicker(el, Object.assign({ showInline: true }, options || {}))
+        return window.inlinePickerInstance
+      }
+
+      window.createDivPicker = function (options) {
+        if (window.divPickerInstance) {
+          window.divPickerInstance.remove()
+          window.divPickerInstance = null
+        }
+        window.log = []
+        document.getElementById('log').textContent = ''
+        const el = document.getElementById('toggle-anchor')
+        window.divPickerInstance = new DateRangePicker(el, options || {})
+        ;['show', 'hide', 'apply'].forEach(function (ev) {
+          el.addEventListener(ev, function (e) {
+            const d = e.detail || {}
+            appendLog(
+              'event:' +
+                ev +
+                ':' +
+                (d.startDate ? d.startDate.toISODate() : '') +
+                '|' +
+                (d.endDate ? d.endDate.toISODate() : '') +
+                '|' +
+                (d.chosenLabel || '')
+            )
+          })
+        })
+        return window.divPickerInstance
+      }
+    </script>
+  </body>
+</html>

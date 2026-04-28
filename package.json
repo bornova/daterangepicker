@@ -1,0 +1,60 @@
+{
+  "name": "@bornova/daterangepicker",
+  "version": "1.0.0",
+  "description": "Flexible JavaScript date range picker with time selection, predefined ranges, and localization.",
+  "keywords": [
+    "daterangepicker",
+    "date-range-picker",
+    "date-picker",
+    "datepicker",
+    "date-range",
+    "time-picker",
+    "calendar",
+    "luxon",
+    "javascript",
+    "esm"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/bornova/daterangepicker",
+  "bugs": {
+    "url": "https://github.com/bornova/daterangepicker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bornova/daterangepicker.git"
+  },
+  "type": "module",
+  "types": "./dist/types/DateRangePicker.d.ts",
+  "style": "dist/daterangepicker.css",
+  "exports": {
+    ".": {
+      "types": "./dist/types/DateRangePicker.d.ts",
+      "import": "./dist/esm/daterangepicker.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "prettier": "prettier --check .",
+    "prebuild": "npm run lint && npm run prettier",
+    "build": "rollup -c && npm run build:types",
+    "build:types": "tsc",
+    "pretest": "playwright install chromium --with-deps",
+    "test": "npm run build && playwright test --reporter=line"
+  },
+  "dependencies": {
+    "luxon": "^3.7.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.59.1",
+    "@rollup/plugin-terser": "^1.0.0",
+    "eslint": "^10.2.1",
+    "globals": "^17.5.0",
+    "prettier": "^3.8.3",
+    "rollup": "^4.60.2",
+    "typescript": "^6.0.3"
+  }
+}
