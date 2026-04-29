@@ -17,7 +17,6 @@
   --drp-today: light-dark(#7aad8e, #7aad8e);
   --drp-cell-size: 32px;
   --drp-cell-height: 32px;
-  --drp-font-size: 0.8rem;
   --drp-radius: 4px;
 }
 
@@ -37,7 +36,6 @@
   border-radius: var(--drp-radius);
   background-color: var(--drp-bg);
   color: var(--drp-text);
-  font-size: var(--drp-font-size);
 }
 
 /* Arrow pointer */
