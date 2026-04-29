@@ -1,0 +1,609 @@
+:root {
+  color-scheme: light dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: light-dark(#f5f6f8, #0f1117);
+  padding: 40px 24px;
+  color: light-dark(#1a1a2e, #e5e7eb);
+  font-size: 14px;
+  line-height: 1.5;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+/* ── page header ── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+h1 {
+  margin-bottom: 4px;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+h1 span {
+  color: #4f6ef7;
+}
+
+h1 .scope {
+  color: light-dark(#9ca3af, #6b7280);
+  font-weight: 400;
+}
+
+.subtitle {
+  color: light-dark(#6b7280, #9ca3af);
+}
+
+.header-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  cursor: pointer;
+  border: 1px solid light-dark(#d1d5db, #4b5563);
+  border-radius: 6px;
+  background: light-dark(#fff, #1e2433);
+  padding: 5px 10px;
+  color: light-dark(#374151, #d1d5db);
+  font-size: 12px;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.icon-btn:hover {
+  border-color: light-dark(#9ca3af, #6b7280);
+  background: light-dark(#f3f4f6, #374151);
+}
+
+.icon-btn svg {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+}
+
+.page {
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
+/* ── cards ── */
+.card {
+  margin-bottom: 24px;
+  border: 1px solid light-dark(#e5e7eb, #374151);
+  border-radius: 10px;
+  background: light-dark(#fff, #1e2433);
+  padding: 24px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  color: light-dark(#6b7280, #9ca3af);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.card > .card-title {
+  margin-bottom: 20px;
+}
+
+.copy-btn {
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+  cursor: pointer;
+  border: 1px solid light-dark(#d1d5db, #4b5563);
+  border-radius: 6px;
+  background: light-dark(#fff, #1e2433);
+  padding: 4px 10px;
+  color: light-dark(#374151, #d1d5db);
+  font-size: 12px;
+}
+
+.copy-btn:hover {
+  border-color: light-dark(#9ca3af, #6b7280);
+  background: light-dark(#f3f4f6, #374151);
+}
+
+/* ── two-column page layout ── */
+.demo-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 0 24px;
+}
+
+/* ── configurator grid ── */
+.config-grid {
+  column-gap: 32px;
+  columns: 4 160px;
+}
+
+.config-grid > div {
+  break-inside: avoid;
+  margin-bottom: 24px;
+}
+
+.config-section-title {
+  margin-bottom: 12px;
+  border-bottom: 1px solid light-dark(#f3f4f6, #374151);
+  padding-bottom: 6px;
+  color: light-dark(#9ca3af, #6b7280);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── form controls ── */
+.field {
+  margin-bottom: 12px;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  color: light-dark(#374151, #d1d5db);
+  font-size: 13px;
+}
+
+input[type='text'],
+input[type='number'],
+select {
+  transition: border-color 0.15s;
+  outline: none;
+  border: 1px solid light-dark(#d1d5db, #4b5563);
+  border-radius: 6px;
+  background: light-dark(#fff, #1e2433);
+  padding: 6px 10px;
+  width: 100%;
+  color: light-dark(#111827, #f9fafb);
+  font-size: 13px;
+}
+
+input[type='text']:focus,
+input[type='number']:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.12);
+  border-color: #4f6ef7;
+}
+
+/* ── checkboxes ── */
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  color: light-dark(#374151, #d1d5db);
+  font-size: 13px;
+  user-select: none;
+}
+
+input[type='checkbox'] {
+  flex-shrink: 0;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  accent-color: #4f6ef7;
+}
+
+#rtl-wrap {
+  margin-left: 4px;
+}
+
+/* ── right column (stacked cards) ── */
+.demo-right {
+  display: flex;
+  position: sticky;
+  top: 24px;
+  flex-direction: column;
+}
+
+.demo-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#config-demo {
+  transition: box-shadow 0.15s;
+  outline: none;
+  border: 2px solid #4f6ef7;
+  border-radius: 8px;
+  padding: 10px 14px;
+  width: 100%;
+  font-size: 14px;
+}
+
+#config-demo:focus {
+  box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.15);
+}
+
+.demo-hint {
+  color: light-dark(#9ca3af, #6b7280);
+  font-size: 12px;
+}
+
+/* ── code output ── */
+#config-text {
+  outline: none;
+  border: 1px solid light-dark(#e5e7eb, #374151);
+  border-radius: 8px;
+  background: light-dark(#f9fafb, #111827);
+  padding: 14px;
+  width: 100%;
+  height: 260px;
+  resize: vertical;
+  color: light-dark(#374151, #d1d5db);
+  font-size: 12px;
+  line-height: 1.6;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}
+
+#config-text:focus {
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.12);
+  border-color: #4f6ef7;
+}
+
+/* demo: dayClassFn example */
+.daterangepicker .calendar-cell.drp-weekend {
+  color: light-dark(#b45309, #fbbf24);
+}
+
+/* ── event log ── */
+.event-log {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 48px;
+  max-height: 148px;
+  overflow-y: auto;
+  font-size: 12px;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}
+
+.event-log-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-bottom: 1px solid light-dark(#f3f4f6, #1e2433);
+  padding: 3px 0;
+}
+
+.event-log-time {
+  flex-shrink: 0;
+  color: light-dark(#9ca3af, #6b7280);
+}
+
+.event-log-name {
+  flex-shrink: 0;
+  color: #4f6ef7;
+  font-weight: 600;
+}
+
+.event-log-info {
+  color: light-dark(#374151, #d1d5db);
+}
+
+.event-log-label {
+  display: inline-block;
+  width: 6ch;
+}
+
+/* ── back to top ── */
+.back-to-top {
+  display: flex;
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  border: 1px solid light-dark(#d1d5db, #4b5563);
+  border-radius: 50%;
+  background: light-dark(#fff, #1e2433);
+  width: 40px;
+  height: 40px;
+  color: light-dark(#374151, #d1d5db);
+  font-size: 18px;
+}
+
+.back-to-top:hover {
+  border-color: light-dark(#9ca3af, #6b7280);
+  background: light-dark(#f3f4f6, #374151);
+}
+
+/* ── docs ── */
+.docs-page {
+  margin-top: 32px;
+}
+
+.docs-section {
+  margin-bottom: 56px;
+}
+
+.docs-section h2 {
+  margin-bottom: 24px;
+  border-bottom: 2px solid light-dark(#e5e7eb, #374151);
+  padding-bottom: 10px;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.docs-section h3 {
+  margin-top: 28px;
+  margin-bottom: 10px;
+  color: light-dark(#6b7280, #9ca3af);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.docs-section p {
+  margin-bottom: 12px;
+  color: light-dark(#374151, #d1d5db);
+  line-height: 1.6;
+}
+
+.docs-section :not(pre) > code {
+  border: 1px solid light-dark(#d0d7de, #3b475f);
+  border-radius: 6px;
+  background: light-dark(#f6f8fa, #1b2232);
+  padding: 0.1em 0.4em;
+  color: inherit;
+  font-size: 0.92em;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  white-space: nowrap;
+}
+
+.docs-table {
+  display: grid;
+  grid-template-columns: auto minmax(0, auto) minmax(0, auto) minmax(0, 1fr);
+  width: 100%;
+  font-size: 13px;
+}
+
+.docs-thead,
+.docs-tbody,
+.docs-tr {
+  display: contents;
+}
+
+.docs-th {
+  border-bottom: 1px solid light-dark(#e5e7eb, #374151);
+  background: light-dark(#f3f4f6, #1a1f2e);
+  padding: 8px 14px;
+  min-width: 0;
+  color: light-dark(#6b7280, #9ca3af);
+  font-weight: 600;
+  text-align: left;
+}
+
+.docs-td {
+  border-bottom: 1px solid light-dark(#f3f4f6, #1e2433);
+  padding: 8px 14px;
+  min-width: 0;
+  color: light-dark(#374151, #d1d5db);
+  overflow-wrap: anywhere;
+}
+
+.docs-tbody .docs-tr:last-child .docs-td {
+  border-bottom: none;
+}
+
+.docs-tr:hover .docs-td {
+  background: light-dark(#f9fafb, #1a1f2e);
+}
+
+.docs-table .docs-td:nth-child(1) {
+  color: light-dark(#1d4ed8, #60a5fa);
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  white-space: nowrap;
+}
+
+.docs-table .docs-td:nth-child(2) {
+  color: light-dark(#6b7280, #9ca3af);
+  font-size: 12px;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}
+
+.docs-table .docs-td:nth-child(3) {
+  font-size: 12px;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}
+
+/* Methods table has two columns; keep description readable and make per-method examples stand out */
+.docs-table-methods {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+/* Generic two-column variant (e.g. Events table) */
+.docs-table-2col {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.docs-table-2col .docs-td:nth-child(2) {
+  color: light-dark(#374151, #d1d5db);
+  font-size: 13px;
+  font-family: inherit;
+  white-space: normal;
+}
+
+.docs-table-methods .docs-td:nth-child(1) {
+  color: light-dark(#1d4ed8, #60a5fa);
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  white-space: nowrap;
+}
+
+.docs-table-methods .docs-td:nth-child(2) {
+  color: light-dark(#374151, #d1d5db);
+  font-size: 13px;
+  font-family: inherit;
+  white-space: normal;
+}
+
+.docs-table-methods .docs-td:nth-child(2) pre {
+  margin-top: 8px;
+  margin-bottom: 0;
+  border: 1px solid light-dark(#dbe3f0, #334155);
+  border-left: 4px solid #4f6ef7;
+  border-radius: 6px;
+  background: light-dark(#f8faff, #0f172a);
+  padding: 10px 12px;
+  overflow-x: auto;
+}
+
+.docs-table-methods .docs-td:nth-child(2) pre code {
+  color: light-dark(#1f2937, #dbeafe);
+  font-size: 12px;
+  line-height: 1.5;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}
+
+.docs-table code {
+  font-size: 12px;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}
+
+.example-demo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid light-dark(#e5e7eb, #374151);
+  border-radius: 8px 8px 0 0;
+  background: light-dark(#f9fafb, #1a1f2e);
+  padding: 20px;
+}
+
+#btn-trigger {
+  cursor: pointer;
+  outline: none;
+  border: 1px solid light-dark(#357ebd, #5b9bd5);
+  border-radius: 4px;
+  background-color: light-dark(#357ebd, #5b9bd5);
+  padding: 6px 12px;
+  color: #fff;
+  font-weight: 500;
+}
+
+#btn-trigger:hover {
+  filter: brightness(1.1);
+}
+
+.method-btn {
+  cursor: pointer;
+  outline: none;
+  border: 1px solid light-dark(#357ebd, #5b9bd5);
+  border-radius: 4px;
+  background-color: light-dark(#357ebd, #5b9bd5);
+  padding: 4px 10px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 12px;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  white-space: nowrap;
+}
+
+.method-btn:hover {
+  filter: brightness(1.1);
+}
+
+.method-btn:disabled {
+  opacity: 0.45;
+  filter: none;
+  cursor: not-allowed;
+}
+
+.example-code {
+  position: relative;
+  margin: 0;
+  border: 1px solid light-dark(#e5e7eb, #374151);
+  border-radius: 8px;
+  background: light-dark(#fff, #000);
+  padding: 16px 20px;
+  overflow-x: auto;
+  color: light-dark(#374151, #d1d5db);
+  font-size: 13px;
+  line-height: 1.6;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}
+
+.example-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition:
+    opacity 0.15s,
+    background 0.15s,
+    border-color 0.15s;
+  cursor: pointer;
+  border: 1px solid light-dark(#d1d5db, #4b5563);
+  border-radius: 6px;
+  background: light-dark(#fff, #1e2433);
+  padding: 3px 8px;
+  color: light-dark(#374151, #d1d5db);
+  font-size: 11px;
+  font-family: inherit;
+}
+
+.example-code:hover .example-copy-btn,
+.example-copy-btn:focus-visible {
+  opacity: 1;
+}
+
+.example-copy-btn:hover {
+  border-color: light-dark(#9ca3af, #6b7280);
+  background: light-dark(#f3f4f6, #374151);
+}
+
+.example-code + .example-code {
+  margin-top: 12px;
+}
+
+div + .example-code {
+  border-top: none;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}

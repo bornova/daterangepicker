@@ -1,0 +1,1160 @@
+﻿<!doctype html>
+<html dir="ltr" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@bornova/daterangepicker — Demo</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bornova/daterangepicker/dist/daterangepicker.css" />
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@bornova/daterangepicker/dist/browser/daterangepicker.min.js"></script>
+  </head>
+
+  <body>
+    <div class="page">
+      <div class="page-header">
+        <div>
+          <h1><span class="scope">@bornova/</span>DateRange<span>Picker</span></h1>
+          <p class="subtitle">
+            A flexible JavaScript date range picker with time, predefined ranges, and locale detection — powered by
+            Luxon.
+          </p>
+        </div>
+        <div class="header-actions">
+          <a
+            id="github-link"
+            class="icon-btn"
+            href="https://github.com/bornova/daterangepicker"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="View on GitHub"
+            aria-label="View on GitHub"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M12 .5C5.73.5.86 5.37.86 11.64c0 4.92 3.19 9.09 7.62 10.57.56.1.77-.24.77-.54 0-.27-.01-.97-.02-1.91-3.1.67-3.76-1.49-3.76-1.49-.51-1.29-1.24-1.63-1.24-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15.99 1.7 2.6 1.21 3.23.93.1-.72.39-1.21.71-1.49-2.47-.28-5.07-1.24-5.07-5.5 0-1.21.43-2.21 1.14-2.99-.11-.28-.5-1.41.11-2.94 0 0 .94-.3 3.07 1.14a10.6 10.6 0 0 1 5.59 0c2.13-1.44 3.07-1.14 3.07-1.14.61 1.53.22 2.66.11 2.94.71.78 1.14 1.78 1.14 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06 0 1.49-.01 2.69-.01 3.05 0 .3.2.65.78.54 4.42-1.48 7.61-5.65 7.61-10.57C23.14 5.37 18.27.5 12 .5z"
+              />
+            </svg>
+          </a>
+          <button id="theme-toggle" class="icon-btn theme-toggle"></button>
+        </div>
+      </div>
+
+      <div class="demo-layout">
+        <div class="demo-left">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Options</div>
+              <button id="reset-config-btn" class="copy-btn">Defaults</button>
+            </div>
+            <div class="config-grid">
+              <!-- Picker -->
+              <div>
+                <div class="config-section-title">Picker</div>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showInline" name="showInline" /> showInline
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="singleDatePicker" name="singleDatePicker" /> singleDatePicker
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="syncCalendars" name="syncCalendars" checked /> syncCalendars
+                </label>
+
+                <div class="field">
+                  <label for="calendarCountSelect">calendarCount</label>
+                  <select id="calendarCountSelect" name="calendarCountSelect">
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="dropDirection">dropDirection</label>
+                  <select id="dropDirection" name="dropDirection">
+                    <option value="auto" selected>auto</option>
+                    <option value="down">down</option>
+                    <option value="up">up</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="openDirection">openDirection</label>
+                  <select id="openDirection" name="openDirection">
+                    <option value="right" selected>right</option>
+                    <option value="left">left</option>
+                    <option value="center">center</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="appendTo">appendTo</label>
+                  <input type="text" id="appendTo" name="appendTo" placeholder="body" />
+                </div>
+
+                <label class="check-label"> <input type="checkbox" id="autoApply" name="autoApply" /> autoApply </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="autoUpdateInput" name="autoUpdateInput" checked /> autoUpdateInput
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="closeOnApply" name="closeOnApply" checked /> closeOnApply
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="closeOnCancel" name="closeOnCancel" checked /> closeOnCancel
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="closeOnEsc" name="closeOnEsc" checked /> closeOnEsc
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="cancelOnClose" name="cancelOnClose" /> cancelOnClose
+                </label>
+              </div>
+
+              <!-- Calendars -->
+              <div>
+                <div class="config-section-title">Calendars</div>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showMonthYearDropdowns" name="showMonthYearDropdowns" />
+                  showMonthYearDropdowns
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showWeekNumbers" name="showWeekNumbers" /> showWeekNumbers
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showISOWeekNumbers" name="showISOWeekNumbers" /> showISOWeekNumbers
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="highlightToday" name="highlightToday" checked /> highlightToday
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="disabledDates" name="disabledDates" /> disabledDates (weekends)
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="dayClassFn" name="dayClassFn" /> dayClassFn (weekends)
+                </label>
+              </div>
+
+              <!-- Dates -->
+              <div>
+                <div class="config-section-title">Dates</div>
+
+                <div class="field">
+                  <label for="startDate">startDate</label>
+                  <input type="text" id="startDate" name="startDate" placeholder="MM/DD/YYYY" />
+                </div>
+
+                <div class="field">
+                  <label for="endDate">endDate</label>
+                  <input type="text" id="endDate" name="endDate" placeholder="MM/DD/YYYY" />
+                </div>
+
+                <div class="field">
+                  <label for="minDate">minDate</label>
+                  <input type="text" id="minDate" name="minDate" placeholder="MM/DD/YYYY" />
+                </div>
+
+                <div class="field">
+                  <label for="maxDate">maxDate</label>
+                  <input type="text" id="maxDate" name="maxDate" placeholder="MM/DD/YYYY" />
+                </div>
+              </div>
+
+              <!-- Time -->
+              <div>
+                <div class="config-section-title">Time</div>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showTimePicker" name="showTimePicker" /> showTimePicker
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="timePicker24Hour" name="timePicker24Hour" /> timePicker24Hour
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="timePickerSeconds" name="timePickerSeconds" /> timePickerSeconds
+                </label>
+
+                <div class="field" style="margin-top: 4px">
+                  <label for="minuteIncrement">minuteIncrement (minutes)</label>
+                  <input type="text" id="minuteIncrement" name="minuteIncrement" value="1" />
+                </div>
+              </div>
+
+              <!-- Duration -->
+              <div>
+                <div class="config-section-title">Duration</div>
+
+                <label class="check-label" style="margin-top: 4px">
+                  <input type="checkbox" id="inclusiveDuration" name="inclusiveDuration" checked /> inclusiveDuration
+                </label>
+
+                <div style="display: flex; gap: 8px; margin-top: 4px">
+                  <div class="field" style="flex: 1">
+                    <label for="minDuration">minDuration (days)</label>
+                    <input type="number" id="minDuration" name="minDuration" placeholder="e.g. 3" min="1" />
+                  </div>
+
+                  <div class="field" style="flex: 1">
+                    <label for="maxDuration">maxDuration (days)</label>
+                    <input type="number" id="maxDuration" name="maxDuration" placeholder="e.g. 7" min="1" />
+                  </div>
+                </div>
+
+                <div class="field" style="margin-top: 4px">
+                  <label for="durationFormat">durationFormat</label>
+                  <input type="text" id="durationFormat" name="durationFormat" placeholder="e.g. d 'days'" />
+                </div>
+              </div>
+
+              <!-- Ranges -->
+              <div>
+                <div class="config-section-title">Ranges</div>
+
+                <label class="check-label">
+                  <input type="checkbox" id="ranges" name="ranges" />
+                  ranges
+                  <input type="checkbox" id="groupedRanges" name="groupedRanges" disabled style="margin-left: 8px" />
+                  grouped
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showCustomRange" name="showCustomRange" checked /> showCustomRange
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="alwaysShowCalendars" name="alwaysShowCalendars" /> alwaysShowCalendars
+                </label>
+              </div>
+
+              <!-- Footer -->
+              <div>
+                <div class="config-section-title">Footer</div>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showSelectedDates" name="showSelectedDates" checked /> showSelectedDates
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showDuration" name="showDuration" checked /> showDuration
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showCancelButton" name="showCancelButton" checked /> showCancelButton
+                </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="showClearButton" name="showClearButton" checked /> showClearButton
+                </label>
+              </div>
+
+              <!-- Custom Classes -->
+              <div>
+                <div class="config-section-title">Custom Classes</div>
+
+                <div class="field">
+                  <label for="pickerClasses">pickerClasses</label>
+                  <input type="text" id="pickerClasses" name="pickerClasses" />
+                </div>
+
+                <div class="field">
+                  <label for="buttonClasses">buttonClasses</label>
+                  <input type="text" id="buttonClasses" name="buttonClasses" />
+                </div>
+
+                <div class="field">
+                  <label for="applyButtonClasses">applyButtonClasses</label>
+                  <input type="text" id="applyButtonClasses" name="applyButtonClasses" />
+                </div>
+
+                <div class="field">
+                  <label for="cancelButtonClasses">cancelButtonClasses</label>
+                  <input type="text" id="cancelButtonClasses" name="cancelButtonClasses" />
+                </div>
+              </div>
+
+              <!-- Locale -->
+              <div>
+                <div class="config-section-title">Locale</div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 8px">
+                  <label class="check-label" style="margin-bottom: 0">
+                    <input type="checkbox" id="locale" name="locale" />
+                    locale
+                  </label>
+                  <label class="check-label" style="margin-bottom: 0">
+                    <input type="checkbox" id="rtl" name="rtl" disabled /> RTL (locale.direction)
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.demo-left -->
+
+        <div class="demo-right">
+          <div class="card">
+            <div class="card-title">Live Preview</div>
+            <div class="demo-input-wrap">
+              <input type="text" id="config-demo" name="config-demo" placeholder="Click to open picker" />
+              <span class="demo-hint">Click the field above to open the picker.</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Configuration</div>
+              <button id="copy-btn" class="copy-btn">Copy</button>
+            </div>
+            <textarea id="config-text" name="config-text" spellcheck="false" readonly></textarea>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Event Log</div>
+              <button id="clear-log-btn" class="copy-btn">Clear</button>
+            </div>
+            <div id="event-log" class="event-log"></div>
+          </div>
+        </div>
+        <!-- /.demo-right -->
+      </div>
+      <!-- /.demo-layout -->
+    </div>
+
+    <div class="page docs-page">
+      <section class="docs-section" id="docs-usage">
+        <h2>Usage</h2>
+
+        <h3>Installation</h3>
+        <p>Install via npm:</p>
+        <pre class="example-code"><code>npm install @bornova/daterangepicker</code></pre>
+
+        <h3>ES Module</h3>
+        <p>Import the picker and its stylesheet from your bundler:</p>
+        <pre class="example-code">
+          <code>
+            import DateRangePicker from '@bornova/daterangepicker'
+            import '@bornova/daterangepicker/dist/daterangepicker.css'
+          </code>
+        </pre>
+
+        <h3>Browser (script tag)</h3>
+        <p>
+          Load <a href="https://moment.github.io/luxon/" target="_blank" rel="noopener noreferrer">Luxon</a> 3.x before
+          the picker. Pin to a specific version (e.g. <code>@bornova/daterangepicker@1.0.0</code>) for production.
+        </p>
+        <pre class="example-code">
+          <code>
+            &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bornova/daterangepicker/dist/daterangepicker.css" /&gt;
+            &lt;script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"&gt;&lt;/script&gt;
+            &lt;script src="https://cdn.jsdelivr.net/npm/@bornova/daterangepicker/dist/browser/daterangepicker.min.js"&gt;&lt;/script&gt;
+          </code>
+        </pre>
+
+        <h3>Quick Start</h3>
+        <p>
+          The constructor accepts a CSS selector or DOM element, an options object, and an optional callback fired on
+          apply. The callback receives Luxon <code>DateTime</code> objects for start and end, plus the predefined range
+          label (<code>chosenLabel</code>, or <code>null</code> for a custom range).
+        </p>
+        <pre class="example-code">
+          <code>
+            &lt;input type="text" id="daterange" /&gt;
+          </code>
+        </pre>
+        <pre class="example-code">
+          <code>
+            const picker = new DateRangePicker(
+              '#daterange',
+              {
+                startDate: '01/01/2025',
+                endDate: '01/31/2025'
+              },
+              (start, end, chosenLabel) => {
+                console.log(start.toISODate(), end.toISODate())
+              }
+            )
+          </code>
+        </pre>
+      </section>
+
+      <section class="docs-section" id="docs-examples">
+        <h2>Alternate Elements</h2>
+
+        <h3>Button Trigger</h3>
+        <p>
+          The picker can attach to any element, not just <code>&lt;input&gt;</code>. When attached to a
+          <code>&lt;button&gt;</code>, it opens on click and focus. Use the <code>apply</code> event to update the
+          button label manually, since <code>autoUpdateInput</code> only writes to <code>&lt;input&gt;</code> elements.
+        </p>
+
+        <div class="example-demo">
+          <button id="btn-trigger">Select dates</button>
+        </div>
+
+        <pre class="example-code">
+          <code>
+            const btn = document.querySelector('#btn-trigger')
+
+            const picker = new DateRangePicker(btn, { autoUpdateInput: false })
+
+            picker.on('apply', (start, end) => {
+              btn.textContent = `${start.toFormat('MM/dd/yyyy')} - ${end.toFormat('MM/dd/yyyy')}`
+            })
+          </code>
+        </pre>
+      </section>
+
+      <section class="docs-section" id="docs-options">
+        <h2>Options</h2>
+
+        <h3>Picker</h3>
+        <div class="docs-table">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Option</div>
+              <div class="docs-th">Type</div>
+              <div class="docs-th">Default</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td">showInline</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">
+                Render the picker inline (always visible) instead of as a dropdown. The attached element is hidden and
+                the calendar is inserted in its place.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">singleDatePicker</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Pick a single date instead of a range. Start and end are set to the same date.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">syncCalendars</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">
+                When <code>true</code>, all calendars move together when navigating months. When <code>false</code>,
+                each calendar's month can be changed independently.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">calendarCount</div>
+              <div class="docs-td">number</div>
+              <div class="docs-td">2</div>
+              <div class="docs-td">Number of calendar months to display (1-12).</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">dropDirection</div>
+              <div class="docs-td">'auto' | 'down' | 'up'</div>
+              <div class="docs-td">'auto'</div>
+              <div class="docs-td">Whether the picker drops down or up relative to the attached element.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">openDirection</div>
+              <div class="docs-td">'left' | 'right' | 'center'</div>
+              <div class="docs-td">'right'</div>
+              <div class="docs-td">Which side the picker opens on relative to the attached element.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">appendTo</div>
+              <div class="docs-td">string | Element</div>
+              <div class="docs-td">'body'</div>
+              <div class="docs-td">Element (or CSS selector) to append the picker container to.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">autoApply</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">
+                When <code>true</code>, hide the Apply button and apply the selection immediately on pick. When
+                <code>false</code>, the Apply button is shown and the user must click it to confirm.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">autoUpdateInput</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">
+                Write the selected range back to the attached <code>&lt;input&gt;</code> on apply.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">closeOnApply</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">
+                Close the picker after applying. When <code>false</code>, the picker stays open after the user clicks
+                Apply (or after auto-apply on pick).
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">closeOnCancel</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">
+                Close the picker after cancelling. When <code>false</code>, the picker stays open after the user clicks
+                Cancel.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">closeOnEsc</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">Close the picker when the user presses Escape.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">cancelOnClose</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">
+                When <code>true</code>, closing the picker without applying (outside click or Esc) cancels and reverts
+                the selection. When <code>false</code>, closing keeps the in-progress selection.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">template</div>
+              <div class="docs-td">string | Element</div>
+              <div class="docs-td"></div>
+              <div class="docs-td">
+                Custom HTML string or Element to use as the picker container, replacing the default template.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Calendars</h3>
+        <div class="docs-table">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Option</div>
+              <div class="docs-th">Type</div>
+              <div class="docs-th">Default</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td">showMonthYearDropdowns</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Show month and year dropdown menus in the calendar header.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">showWeekNumbers</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Show locale-based week numbers in a column to the left of each row.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">showISOWeekNumbers</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Show ISO-8601 week numbers instead of locale week numbers.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">highlightToday</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">Add the <code>drp-today</code> CSS class to today's cell.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">disabledDates</div>
+              <div class="docs-td">DateTime[] | function(DateTime): boolean</div>
+              <div class="docs-td">[]</div>
+              <div class="docs-td">
+                Dates to disable. Pass an array of date values or a predicate that receives a Luxon
+                <code>DateTime</code> and returns <code>true</code> to disable that day.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">dayClassFn</div>
+              <div class="docs-td">function(DateTime): string | string[] | false</div>
+              <div class="docs-td">undefined</div>
+              <div class="docs-td">
+                Called for every day cell. Return a CSS class string, an array of class strings, or
+                <code>false</code> to add no class.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Dates</h3>
+        <div class="docs-table">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Option</div>
+              <div class="docs-th">Type</div>
+              <div class="docs-th">Default</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td">startDate</div>
+              <div class="docs-td">string | Date | DateTime</div>
+              <div class="docs-td">—</div>
+              <div class="docs-td">
+                Initial start date. Accepts a formatted string (per <code>locale.format</code>), a JS <code>Date</code>,
+                or a Luxon <code>DateTime</code>. When omitted the picker opens with no selection and a blank input.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">endDate</div>
+              <div class="docs-td">string | Date | DateTime</div>
+              <div class="docs-td">—</div>
+              <div class="docs-td">Initial end date. Ignored when <code>startDate</code> is not provided.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">minDate</div>
+              <div class="docs-td">string | Date | DateTime | false</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Earliest selectable date. Dates before this are disabled.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">maxDate</div>
+              <div class="docs-td">string | Date | DateTime | false</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Latest selectable date. Dates after this are disabled.</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Time</h3>
+        <div class="docs-table">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Option</div>
+              <div class="docs-th">Type</div>
+              <div class="docs-th">Default</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td">showTimePicker</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Show hour and minute dropdowns below each calendar.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">timePicker24Hour</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Use 24-hour format in the time picker. When false, AM/PM selector is shown.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">timePickerSeconds</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Show a seconds dropdown in the time picker.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">minuteIncrement</div>
+              <div class="docs-td">number</div>
+              <div class="docs-td">1</div>
+              <div class="docs-td">Minute increment for the minutes dropdown.</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Duration</h3>
+        <div class="docs-table">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Option</div>
+              <div class="docs-th">Type</div>
+              <div class="docs-th">Default</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td">inclusiveDuration</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">
+                When <code>true</code>, duration counts both the start and end day (e.g. Apr 7-10 = 4 days). When
+                <code>false</code>, duration is the elapsed difference (3 days).
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">minDuration</div>
+              <div class="docs-td">number | false</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Minimum number of days that must be selected.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">maxDuration</div>
+              <div class="docs-td">number | false</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Maximum number of days that can be selected.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">durationFormat</div>
+              <div class="docs-td">string</div>
+              <div class="docs-td">"d 'days'"</div>
+              <div class="docs-td">
+                Luxon duration format string, e.g. <code>"d 'days'"</code>. When <code>showTimePicker</code> is enabled
+                and no value is supplied, the default becomes <code>"d 'days', h 'hrs'"</code>. Use
+                <code>showDuration: false</code> to hide the duration entirely.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Ranges</h3>
+        <div class="docs-table">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Option</div>
+              <div class="docs-th">Type</div>
+              <div class="docs-th">Default</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td">ranges</div>
+              <div class="docs-td">object</div>
+              <div class="docs-td"></div>
+              <div class="docs-td">
+                Predefined date ranges shown in a list. Flat: <code>{ 'Today': [start, end] }</code>. Grouped:
+                <code>{ 'Group': { 'Label': [start, end] } }</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">showCustomRange</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">
+                Show a "Custom Range" item at the bottom of the ranges list that opens the calendars.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">alwaysShowCalendars</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">Show the calendar panels even when predefined ranges are defined.</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Footer</h3>
+        <div class="docs-table">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Option</div>
+              <div class="docs-th">Type</div>
+              <div class="docs-th">Default</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td">showSelectedDates</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">Show the selected date range string in the picker footer.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">showDuration</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">Show the selected duration next to the range string in the footer.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">showCancelButton</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">Show the Cancel button.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">showClearButton</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">true</div>
+              <div class="docs-td">
+                Show a Clear button that resets <code>startDate</code>/<code>endDate</code> to <code>null</code>,
+                empties the input, and fires a <code>clear</code> event.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Custom Classes</h3>
+        <div class="docs-table">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Option</div>
+              <div class="docs-th">Type</div>
+              <div class="docs-th">Default</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td">pickerClasses</div>
+              <div class="docs-td">string | string[]</div>
+              <div class="docs-td">''</div>
+              <div class="docs-td">CSS class(es) added to the picker container element.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">buttonClasses</div>
+              <div class="docs-td">string | string[]</div>
+              <div class="docs-td">''</div>
+              <div class="docs-td">CSS class(es) applied to all action buttons (Apply, Cancel, and Clear).</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">applyButtonClasses</div>
+              <div class="docs-td">string | string[]</div>
+              <div class="docs-td">''</div>
+              <div class="docs-td">Additional CSS class(es) applied to the Apply button only.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">cancelButtonClasses</div>
+              <div class="docs-td">string | string[]</div>
+              <div class="docs-td">''</div>
+              <div class="docs-td">Additional CSS class(es) applied to the Cancel button only.</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Locale</h3>
+        <div class="docs-table">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Option</div>
+              <div class="docs-th">Type</div>
+              <div class="docs-th">Default</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td">locale.format</div>
+              <div class="docs-td">string</div>
+              <div class="docs-td">locale-detected</div>
+              <div class="docs-td">
+                Luxon format string used to parse and display dates, e.g. <code>'MM/dd/yyyy'</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.separator</div>
+              <div class="docs-td">string</div>
+              <div class="docs-td">' - '</div>
+              <div class="docs-td">String placed between the start and end date in the input value.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.applyButtonLabel</div>
+              <div class="docs-td">string</div>
+              <div class="docs-td">'Apply'</div>
+              <div class="docs-td">Label for the Apply button.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.cancelButtonLabel</div>
+              <div class="docs-td">string</div>
+              <div class="docs-td">'Cancel'</div>
+              <div class="docs-td">Label for the Cancel button.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.clearButtonLabel</div>
+              <div class="docs-td">string</div>
+              <div class="docs-td">'Clear'</div>
+              <div class="docs-td">Label for the Clear button.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.customRangeLabel</div>
+              <div class="docs-td">string</div>
+              <div class="docs-td">'Custom Range'</div>
+              <div class="docs-td">Label for the custom range list item.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.weekLabel</div>
+              <div class="docs-td">string</div>
+              <div class="docs-td">'W'</div>
+              <div class="docs-td">Header label for the week-number column.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.daysOfWeek</div>
+              <div class="docs-td">string[]</div>
+              <div class="docs-td">locale-detected</div>
+              <div class="docs-td">
+                Short weekday names, Sunday-first, e.g. <code>['Su','Mo','Tu','We','Th','Fr','Sa']</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.monthNames</div>
+              <div class="docs-td">string[]</div>
+              <div class="docs-td">locale-detected</div>
+              <div class="docs-td">Month names, January-first.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.firstDay</div>
+              <div class="docs-td">number</div>
+              <div class="docs-td">locale-detected</div>
+              <div class="docs-td">First day of the week: <code>0</code> = Sunday, <code>1</code> = Monday, etc.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">locale.direction</div>
+              <div class="docs-td">'ltr' | 'rtl'</div>
+              <div class="docs-td">'ltr'</div>
+              <div class="docs-td">Text direction. Sets a corresponding CSS class on the picker container.</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>data-* Attributes</h3>
+        <p>
+          All scalar options (booleans, numbers, and strings) can be set directly on the element via
+          <code>data-*</code> attributes using kebab-case — no JavaScript configuration needed. The picker below is
+          initialised with a single <code>new DateRangePicker('#data-trigger')</code> call; all other options come from
+          the markup.
+        </p>
+
+        <div class="example-demo">
+          <input
+            id="data-trigger"
+            type="text"
+            placeholder="Click to open picker"
+            data-start-date="01/09/2026"
+            data-end-date="02/25/2026"
+            data-show-week-numbers="true"
+            data-highlight-today="true"
+            data-open-direction="left"
+          />
+        </div>
+
+        <pre class="example-code">
+          <code>
+            &lt;input
+              id="data-trigger"
+              data-start-date="01/09/2026"
+              data-end-date="02/25/2026"
+              data-show-week-numbers="true"
+              data-highlight-today="true"
+              data-open-direction="left"
+            /&gt;
+
+            &lt;script&gt;
+              new DateRangePicker('#data-trigger')
+            &lt;/script&gt;
+          </code>
+        </pre>
+        <p>
+          Options requiring objects, arrays, or functions — such as <code>ranges</code>, <code>disabledDates</code>,
+          <code>dayClassFn</code>, and <code>locale</code> — must be passed via the constructor.
+        </p>
+      </section>
+
+      <section class="docs-section" id="docs-methods">
+        <h2>Methods</h2>
+        <p>All methods operate on the same picker instance.</p>
+
+        <div class="docs-table docs-table-methods" style="margin-top: 24px">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Method</div>
+              <div class="docs-th">Description</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td"><code>setStartDate(date)</code></div>
+              <div class="docs-td">
+                Programmatically set the start date. Accepts a formatted string, JS <code>Date</code>, or Luxon
+                <code>DateTime</code>. Clamps to <code>minDate</code>/<code>maxDate</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>setEndDate(date)</code></div>
+              <div class="docs-td">
+                Programmatically set the end date. Enforces <code>minDuration</code> distance from start, clamps to
+                <code>maxDate</code>/<code>maxDuration</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>setDateRange(start, end)</code></div>
+              <div class="docs-td">
+                Set both start and end dates atomically with a single render. Accepts the same value types as
+                <code>setStartDate</code> / <code>setEndDate</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>updateInput()</code></div>
+              <div class="docs-td">
+                Write the current selection back to the attached <code>&lt;input&gt;</code>. Only needed when
+                <code>autoUpdateInput</code> is <code>false</code> and you want to sync the input manually.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>apply()</code></div>
+              <div class="docs-td">
+                Apply the current in-picker selection and fire the <code>apply</code> event. Hides the picker unless
+                <code>closeOnApply</code> is <code>false</code>. Equivalent to clicking the Apply button.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>clear()</code></div>
+              <div class="docs-td">
+                Reset <code>startDate</code> and <code>endDate</code> to <code>null</code>, empty the attached input,
+                and fire the <code>clear</code> event.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>cancel()</code></div>
+              <div class="docs-td">
+                Revert selection to the values captured when the picker was opened and fire the
+                <code>cancel</code> event.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>show()</code></div>
+              <div class="docs-td">Open the picker. Saves the current selection as the revert point for cancel.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>hide()</code></div>
+              <div class="docs-td">Close the picker. Fires the callback if the selection changed.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>toggle()</code></div>
+              <div class="docs-td">Open if closed, close if open.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>setOptions(options)</code></div>
+              <div class="docs-td">
+                Apply partial option updates at runtime and refresh the picker UI (labels, classes, ranges, and view).
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>getDateRange()</code></div>
+              <div class="docs-td">Return the current selection as <code>{ startDate, endDate }</code>.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>getState()</code></div>
+              <div class="docs-td">
+                Return a snapshot of state as <code>{ isShowing, startDate, endDate, chosenLabel }</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>on(event, fn)</code></div>
+              <div class="docs-td">
+                Subscribe to a picker event. The handler receives <code>(startDate, endDate, chosenLabel)</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>once(event, fn)</code></div>
+              <div class="docs-td">Subscribe to a picker event and auto-unsubscribe after the first call.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>off(event, fn)</code></div>
+              <div class="docs-td">Remove a handler previously added with <code>on()</code>.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>remove()</code></div>
+              <div class="docs-td">Remove the picker from the DOM and clean up all event listeners.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="docs-section" id="docs-events">
+        <h2>Events</h2>
+        <p>
+          All events are dispatched as <code>CustomEvent</code>s on the attached element. Listen with
+          <code>element.addEventListener(name, fn)</code> or use the <code>on()</code> method. For
+          <code>show</code>/<code>hide</code>, <code>event.detail</code> is the internal picker instance. For
+          <code>apply</code>/<code>cancel</code>, <code>event.detail</code> is an object containing selection data
+          (<code>startDate</code>, <code>endDate</code>, and optional <code>chosenLabel</code>). The custom
+          <code>change</code> event fires only when a committed selection is different from the previously committed
+          selection; its payload includes old and new values. For <code>clear</code>, <code>event.detail</code> is an
+          empty object.
+        </p>
+        <div class="docs-table docs-table-2col">
+          <div class="docs-thead">
+            <div class="docs-tr">
+              <div class="docs-th">Event</div>
+              <div class="docs-th">Fired when</div>
+            </div>
+          </div>
+          <div class="docs-tbody">
+            <div class="docs-tr">
+              <div class="docs-td"><code>show</code></div>
+              <div class="docs-td">The picker has opened and is visible.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>hide</code></div>
+              <div class="docs-td">The picker has closed and is no longer visible.</div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>apply</code></div>
+              <div class="docs-td">
+                Fired when the selection is applied. <code>event.detail</code> includes <code>startDate</code>,
+                <code>endDate</code>, and <code>chosenLabel</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>change</code></div>
+              <div class="docs-td">
+                Fired only when a commit changes the selected range/date-time (for example Apply or Auto Apply).
+                <code>event.detail</code> includes <code>oldStartDate</code>, <code>oldEndDate</code>,
+                <code>startDate</code>, <code>endDate</code>, <code>chosenLabel</code>, and <code>source</code> (<code
+                  >apply</code
+                >
+                or <code>autoApply</code>).
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>cancel</code></div>
+              <div class="docs-td">
+                The user clicks Cancel, or closes the picker while <code>cancelOnClose</code> is <code>true</code>.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td"><code>clear</code></div>
+              <div class="docs-td">
+                The user clicks Clear; <code>startDate</code> and <code>endDate</code> are set to <code>null</code> and
+                the input is emptied.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <button class="back-to-top" aria-label="Back to top">↑</button>
+
+    <script src="./docs.js"></script>
+  </body>
+</html>
