@@ -2,7 +2,6 @@
 
 [![npm](https://img.shields.io/npm/v/@bornova/daterangepicker.svg)](https://www.npmjs.com/package/@bornova/daterangepicker)
 [![license](https://img.shields.io/npm/l/@bornova/daterangepicker.svg)](LICENSE)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/@bornova/daterangepicker)](https://bundlephobia.com/package/@bornova/daterangepicker)
 
 A flexible JavaScript date range picker with time pickers, predefined ranges, week numbers, and automatic locale detection - powered by [Luxon](https://moment.github.io/luxon/).
 
