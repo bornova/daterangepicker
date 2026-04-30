@@ -2,9 +2,3 @@ node_modules/
 
 dist/
 test-results/
-website/
-
-# Build artifacts copied into docs/ for the live demo
-docs/daterangepicker.css
-docs/daterangepicker.min.js
-docs/daterangepicker.min.js.map
