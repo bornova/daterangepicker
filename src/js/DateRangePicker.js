@@ -1,6 +1,14 @@
 ﻿import { createDefaultOptions, applyOptions } from './internal/options.js'
 import { getDataAttributes } from './internal/helpers.js'
-import { buildContainer, configureContainer, initRanges, mount, refreshContainer } from './internal/template.js'
+import {
+  buildContainer,
+  configureContainer,
+  fitCalendars,
+  initRanges,
+  mount,
+  refreshContainer,
+  teardownFit
+} from './internal/template.js'
 import { initState, initDates } from './internal/state.js'
 import { bindHandlers, attachHandlers, detachHandlers, toggleListeners } from './internal/bindings.js'
 import { parseDateTime, snapMinute, formatRange, readInputDates } from './internal/dates.js'
@@ -271,6 +279,10 @@ class DateRangePicker {
       trigger(this, 'show', this)
       this._isShowing = true
 
+      if (this.options.wrapCalendars) {
+        requestAnimationFrame(() => fitCalendars(this))
+      }
+
       return
     }
 
@@ -285,6 +297,10 @@ class DateRangePicker {
     this._showTime = Date.now()
     trigger(this, 'show', this)
     this._isShowing = true
+
+    if (this.options.wrapCalendars) {
+      requestAnimationFrame(() => fitCalendars(this))
+    }
   }
 
   /**
@@ -497,6 +513,7 @@ class DateRangePicker {
     }
 
     toggleListeners(this, false)
+    teardownFit(this)
     this.container.remove()
 
     detachHandlers(this)

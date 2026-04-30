@@ -71,9 +71,11 @@ const CHECKBOXES = [
   'showCancelButton',
   'singleDatePicker',
   'syncCalendars',
+  'wrapCalendars',
   'cancelOnClose',
   'closeOnCancel',
   'showInline',
+  'showVertical',
   'ranges',
   'groupedRanges',
   'alwaysShowCalendars',
@@ -102,7 +104,7 @@ const INPUTS = [
   'cancelButtonClasses'
 ]
 
-const SELECTS = ['openDirection', 'dropDirection', 'calendarCountSelect']
+const SELECTS = ['openDirection', 'dropDirection', 'calendarCountSelect', 'verticalColumnsSelect']
 
 function el(id) {
   return document.getElementById(id)
@@ -168,6 +170,7 @@ function resetConfig() {
   el('minuteIncrement').value = '1'
   SELECTS.forEach((id) => (el(id).selectedIndex = 0))
   el('calendarCountSelect').value = '2'
+  el('verticalColumnsSelect').value = '1'
   initDatePickers()
   updateConfig()
 }
@@ -312,10 +315,14 @@ function updateConfig() {
 
   // Picker
   if (checked('showInline')) options.showInline = true
+  if (checked('showVertical')) options.showVertical = true
   if (checked('singleDatePicker')) options.singleDatePicker = true
   if (!checked('syncCalendars')) options.syncCalendars = false
+  if (checked('wrapCalendars')) options.wrapCalendars = true
   const calendarCount = parseInt(val('calendarCountSelect'), 10)
   if (calendarCount !== 2) options.calendarCount = calendarCount
+  const verticalColumns = parseInt(val('verticalColumnsSelect'), 10)
+  if (verticalColumns !== 1) options.verticalColumns = verticalColumns
   if (val('dropDirection') !== 'auto') options.dropDirection = val('dropDirection')
   if (val('openDirection') !== 'right') options.openDirection = val('openDirection')
   if (val('appendTo').length) options.appendTo = val('appendTo')

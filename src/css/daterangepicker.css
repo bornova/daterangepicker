@@ -161,6 +161,29 @@
 .daterangepicker.single-calendar .drp-footer-right {
   justify-content: flex-end;
 }
+
+.daterangepicker.vertical .drp-footer {
+  grid-template-columns: 1fr;
+}
+
+.daterangepicker.vertical .drp-footer-left {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.daterangepicker.vertical .drp-footer-left .drp-selected,
+.daterangepicker.vertical .drp-footer-left .drp-duration {
+  margin-left: 0;
+}
+
+.daterangepicker.vertical .drp-footer-right {
+  justify-content: flex-end;
+}
+
+.daterangepicker.vertical .drp-time-row {
+  grid-template-columns: 1fr;
+}
 .daterangepicker.show-calendar .drp-calendar {
   display: flex;
   flex-direction: column;
@@ -185,6 +208,38 @@
 .daterangepicker .drp-calendar-container {
   display: flex;
   user-select: none;
+}
+
+.daterangepicker.wrap-calendars .drp-calendar-container {
+  flex-wrap: wrap;
+}
+
+.daterangepicker.vertical .drp-calendar-container {
+  flex-direction: column;
+}
+
+.daterangepicker.vertical-multi-column .drp-calendar-container {
+  display: grid;
+  grid-template-columns: repeat(var(--drp-vertical-cols, 1), auto);
+  grid-template-rows: auto repeat(var(--drp-vertical-rows, 1), auto);
+}
+
+.daterangepicker.vertical-multi-column .drp-ranges {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+.daterangepicker.wrap-calendars,
+.daterangepicker.wrap-calendars.inline,
+.daterangepicker.wrap-calendars.single {
+  width: auto;
+  max-width: 100%;
+}
+
+.daterangepicker.vertical,
+.daterangepicker.vertical.inline,
+.daterangepicker.vertical.single {
+  width: fit-content;
 }
 
 .daterangepicker .drp-calendar {

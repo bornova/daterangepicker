@@ -7,9 +7,9 @@
 
     <link rel="stylesheet" href="style.css" />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bornova/daterangepicker/dist/daterangepicker.css" />
+    <link rel="stylesheet" href="./daterangepicker.css" />
     <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@bornova/daterangepicker/dist/browser/daterangepicker.min.js"></script>
+    <script src="./daterangepicker.min.js"></script>
   </head>
 
   <body>
@@ -59,12 +59,30 @@
                 </label>
 
                 <label class="check-label">
+                  <input type="checkbox" id="showVertical" name="showVertical" /> showVertical
+                </label>
+
+                <label class="check-label">
                   <input type="checkbox" id="singleDatePicker" name="singleDatePicker" /> singleDatePicker
                 </label>
 
                 <label class="check-label">
                   <input type="checkbox" id="syncCalendars" name="syncCalendars" checked /> syncCalendars
                 </label>
+
+                <label class="check-label">
+                  <input type="checkbox" id="wrapCalendars" name="wrapCalendars" /> wrapCalendars
+                </label>
+
+                <div class="field">
+                  <label for="verticalColumnsSelect">verticalColumns</label>
+                  <select id="verticalColumnsSelect" name="verticalColumnsSelect">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
 
                 <div class="field">
                   <label for="calendarCountSelect">calendarCount</label>
@@ -456,10 +474,22 @@
               </div>
             </div>
             <div class="docs-tr">
-              <div class="docs-td">singleDatePicker</div>
+              <div class="docs-td">showVertical</div>
               <div class="docs-td">boolean</div>
               <div class="docs-td">false</div>
-              <div class="docs-td">Pick a single date instead of a range. Start and end are set to the same date.</div>
+              <div class="docs-td">
+                Lay out calendars vertically in a single column instead of horizontally in a row.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">verticalColumns</div>
+              <div class="docs-td">number</div>
+              <div class="docs-td">1</div>
+              <div class="docs-td">
+                When <code>showVertical</code> is <code>true</code>, number of columns of stacked calendars before
+                wrapping. Calendars fill each row left-to-right before moving to the next. Capped at
+                <code>calendarCount</code>; values less than 1 clamp to 1.
+              </div>
             </div>
             <div class="docs-tr">
               <div class="docs-td">syncCalendars</div>
@@ -468,6 +498,15 @@
               <div class="docs-td">
                 When <code>true</code>, all calendars move together when navigating months. When <code>false</code>,
                 each calendar's month can be changed independently.
+              </div>
+            </div>
+            <div class="docs-tr">
+              <div class="docs-td">wrapCalendars</div>
+              <div class="docs-td">boolean</div>
+              <div class="docs-td">false</div>
+              <div class="docs-td">
+                Allow calendars to wrap onto multiple rows instead of laying out on a single row. Useful when displaying
+                many calendars in a constrained width.
               </div>
             </div>
             <div class="docs-tr">

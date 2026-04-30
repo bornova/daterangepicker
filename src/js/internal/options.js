@@ -8,8 +8,11 @@ import { parseDateTime } from './dates.js'
  * @typedef {object} DateRangePickerOptions
  *
  * @property {boolean} [showInline=false] Render the picker inline (always visible) instead of as a dropdown. Hides the attached element and inserts the calendar in its place.
+ * @property {boolean} [showVertical=false] Lay out calendars vertically in a single column instead of horizontally in a row.
+ * @property {number} [verticalColumns=1] When `showVertical` is `true`, number of columns of stacked calendars before wrapping. Calendars fill each row left-to-right before moving to the next. Capped at `calendarCount`; values < 1 clamp to 1.
  * @property {boolean} [singleDatePicker=false] Pick a single date instead of a range.
  * @property {boolean} [syncCalendars=true] When `true`, all calendars move together. When `false`, each calendar's month can be changed independently.
+ * @property {boolean} [wrapCalendars=false] Allow calendars to wrap onto multiple rows instead of laying out on a single row. Useful when displaying many calendars in a constrained width.
  * @property {number} [calendarCount=2] Number of calendar months to show (1–12).
  * @property {'down'|'up'|'auto'} [dropDirection='auto'] Vertical drop direction.
  * @property {'left'|'right'|'center'} [openDirection='right'] Which side the picker opens on.
@@ -82,8 +85,10 @@ export function applyOptions(picker, options) {
   /** Maps option keys to the `typeof` value required to accept them. */
   const typedOptionKeys = {
     showInline: 'boolean',
+    showVertical: 'boolean',
     singleDatePicker: 'boolean',
     syncCalendars: 'boolean',
+    wrapCalendars: 'boolean',
     cancelOnClose: 'boolean',
     closeOnApply: 'boolean',
     closeOnCancel: 'boolean',
@@ -116,6 +121,10 @@ export function applyOptions(picker, options) {
 
   if (typeof options.calendarCount === 'number') {
     picker.options.calendarCount = Math.max(1, Math.min(12, Math.round(options.calendarCount)))
+  }
+
+  if (typeof options.verticalColumns === 'number' && Number.isFinite(options.verticalColumns)) {
+    picker.options.verticalColumns = Math.max(1, Math.round(options.verticalColumns))
   }
 
   const resolvedAppendTo =
@@ -241,9 +250,12 @@ export function applyOptions(picker, options) {
 export function createDefaultOptions() {
   return {
     showInline: false,
+    showVertical: false,
     singleDatePicker: false,
     syncCalendars: true,
+    wrapCalendars: false,
     calendarCount: 2,
+    verticalColumns: 1,
     dropDirection: 'auto',
     openDirection: 'right',
     appendTo: 'body',

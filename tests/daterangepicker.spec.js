@@ -333,6 +333,193 @@ test.describe('calendarCount', () => {
   })
 })
 
+test.describe('showVertical', () => {
+  test('adds vertical class and stacks calendars in a single column', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.evaluate(() => window.createInlinePicker({ showVertical: true, calendarCount: 2 }))
+
+    const picker = page.locator('#inline-anchor + .daterangepicker')
+
+    await expect(picker).toHaveClass(/vertical/)
+    await expect(picker).not.toHaveClass(/vertical-multi-column/)
+
+    const positions = await picker.locator('.drp-calendar:not([style*="display: none"])').evaluateAll((els) =>
+      els.map((e) => {
+        const r = e.getBoundingClientRect()
+        return { x: Math.round(r.x), y: Math.round(r.y) }
+      })
+    )
+
+    expect(positions).toHaveLength(2)
+    expect(positions[0].x).toBe(positions[1].x)
+    expect(positions[1].y).toBeGreaterThan(positions[0].y)
+  })
+
+  test('does not add vertical class when showVertical is false', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.evaluate(() => window.createInlinePicker({ calendarCount: 2 }))
+    await expect(page.locator('#inline-anchor + .daterangepicker')).not.toHaveClass(/vertical/)
+  })
+})
+
+test.describe('verticalColumns', () => {
+  test('verticalColumns > 1 adds multi-column class and arranges calendars row-major', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.evaluate(() => window.createInlinePicker({ showVertical: true, verticalColumns: 2, calendarCount: 4 }))
+
+    const picker = page.locator('#inline-anchor + .daterangepicker')
+
+    await expect(picker).toHaveClass(/vertical-multi-column/)
+
+    const positions = await picker.locator('.drp-calendar:not([style*="display: none"])').evaluateAll((els) =>
+      els.map((e) => {
+        const r = e.getBoundingClientRect()
+        return { x: Math.round(r.x), y: Math.round(r.y) }
+      })
+    )
+
+    expect(positions).toHaveLength(4)
+    // Row-major: 0,1 share row; 2,3 share row; row 2 below row 1
+    expect(positions[0].y).toBe(positions[1].y)
+    expect(positions[2].y).toBe(positions[3].y)
+    expect(positions[2].y).toBeGreaterThan(positions[0].y)
+    expect(positions[1].x).toBeGreaterThan(positions[0].x)
+    expect(positions[3].x).toBeGreaterThan(positions[2].x)
+  })
+
+  test('odd calendarCount: last row is partially filled left-aligned', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.evaluate(() => window.createInlinePicker({ showVertical: true, verticalColumns: 2, calendarCount: 5 }))
+
+    const positions = await page
+      .locator('#inline-anchor + .daterangepicker .drp-calendar:not([style*="display: none"])')
+      .evaluateAll((els) =>
+        els.map((e) => {
+          const r = e.getBoundingClientRect()
+          return { x: Math.round(r.x), y: Math.round(r.y) }
+        })
+      )
+
+    expect(positions).toHaveLength(5)
+    // Last calendar starts a new row in the leftmost column
+    expect(positions[4].x).toBe(positions[0].x)
+    expect(positions[4].y).toBeGreaterThan(positions[2].y)
+  })
+
+  test('verticalColumns sets --drp-vertical-cols and --drp-vertical-rows custom properties', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.evaluate(() => window.createInlinePicker({ showVertical: true, verticalColumns: 3, calendarCount: 6 }))
+
+    const vars = await page.locator('#inline-anchor + .daterangepicker .drp-calendar-container').evaluate((el) => ({
+      cols: el.style.getPropertyValue('--drp-vertical-cols'),
+      rows: el.style.getPropertyValue('--drp-vertical-rows')
+    }))
+
+    expect(vars.cols).toBe('3')
+    expect(vars.rows).toBe('2')
+  })
+
+  test('verticalColumns=1 does not add multi-column class', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.evaluate(() => window.createInlinePicker({ showVertical: true, verticalColumns: 1, calendarCount: 3 }))
+
+    await expect(page.locator('#inline-anchor + .daterangepicker')).not.toHaveClass(/vertical-multi-column/)
+  })
+
+  test('verticalColumns is ignored when showVertical is false', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.evaluate(() => window.createInlinePicker({ verticalColumns: 2, calendarCount: 4 }))
+
+    const picker = page.locator('#inline-anchor + .daterangepicker')
+
+    await expect(picker).not.toHaveClass(/vertical/)
+    await expect(picker).not.toHaveClass(/vertical-multi-column/)
+  })
+
+  test('non-integer verticalColumns is rounded; values < 1 clamp to 1', async ({ page }) => {
+    await page.goto(FIXTURE)
+    const cols = await page.evaluate(() => {
+      window.createInlinePicker({ showVertical: true, verticalColumns: 0, calendarCount: 2 })
+      return window.inlinePickerInstance.options.verticalColumns
+    })
+
+    expect(cols).toBe(1)
+  })
+
+  test('verticalColumns is capped at calendarCount', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.evaluate(() => window.createInlinePicker({ showVertical: true, verticalColumns: 99, calendarCount: 3 }))
+
+    const vars = await page.locator('#inline-anchor + .daterangepicker .drp-calendar-container').evaluate((el) => ({
+      cols: el.style.getPropertyValue('--drp-vertical-cols'),
+      rows: el.style.getPropertyValue('--drp-vertical-rows')
+    }))
+
+    // cols capped at calendarCount (3) → 1 row of 3 calendars
+    expect(vars.cols).toBe('3')
+    expect(vars.rows).toBe('1')
+  })
+})
+
+test.describe('wrapCalendars', () => {
+  test('adds wrap-calendars class and sizes container to fit a whole number of calendars', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.setViewportSize({ width: 700, height: 800 })
+    await page.evaluate(() => {
+      const anchor = document.getElementById('inline-anchor')
+
+      anchor.style.width = '600px'
+      window.createInlinePicker({ wrapCalendars: true, calendarCount: 4 })
+    })
+
+    const picker = page.locator('#inline-anchor + .daterangepicker')
+
+    await expect(picker).toHaveClass(/wrap-calendars/)
+    // Wait for the ResizeObserver-driven fit to apply an inline width.
+    await expect
+      .poll(async () => (await picker.evaluate((el) => el.style.width)).trim(), { timeout: 2000 })
+      .not.toBe('')
+
+    const data = await picker.evaluate((el) => {
+      const inner = el.querySelector('.drp-calendar-container')
+      const cals = [...inner.querySelectorAll('.drp-calendar')].filter((c) => c.style.display !== 'none')
+      const ys = [...new Set(cals.map((c) => Math.round(c.getBoundingClientRect().top)))]
+      return { rows: ys.length, calCount: cals.length, hasWidth: !!el.style.width }
+    })
+
+    expect(data.calCount).toBe(4)
+    expect(data.hasWidth).toBe(true)
+    // Calendars should have wrapped onto multiple rows in the constrained width.
+    expect(data.rows).toBeGreaterThan(1)
+  })
+
+  test('does not add wrap-calendars class when wrapCalendars is false', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.evaluate(() => window.createInlinePicker({ calendarCount: 2 }))
+    await expect(page.locator('#inline-anchor + .daterangepicker')).not.toHaveClass(/wrap-calendars/)
+  })
+
+  test('disabling wrapCalendars at runtime clears the inline width', async ({ page }) => {
+    await page.goto(FIXTURE)
+    await page.setViewportSize({ width: 700, height: 800 })
+    await page.evaluate(() => {
+      document.getElementById('inline-anchor').style.width = '600px'
+      window.createInlinePicker({ wrapCalendars: true, calendarCount: 4 })
+    })
+
+    const picker = page.locator('#inline-anchor + .daterangepicker')
+
+    await expect
+      .poll(async () => (await picker.evaluate((el) => el.style.width)).trim(), { timeout: 2000 })
+      .not.toBe('')
+
+    await page.evaluate(() => window.inlinePickerInstance.setOptions({ wrapCalendars: false }))
+
+    await expect(picker).not.toHaveClass(/wrap-calendars/)
+    expect(await picker.evaluate((el) => el.style.width)).toBe('')
+  })
+})
+
 test.describe('dropDirection auto', () => {
   test("dropDirection='auto' does not add drop-up when there is space below the input", async ({ page }) => {
     await setup(page, { dropDirection: 'auto' })

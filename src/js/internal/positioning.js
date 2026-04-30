@@ -61,12 +61,18 @@ export function move(picker) {
     // Use viewport-relative coords for the space check so scrolling doesn't
     // confuse document-relative positions with window.innerHeight.
     const elRect = picker.element.getBoundingClientRect()
-    const fitsBelow =
+    const containerH = picker.container.offsetHeight
+    const spaceBelow =
       picker.options.appendTo === document.body
-        ? elRect.bottom + picker.container.offsetHeight <= window.innerHeight
-        : belowTop + picker.container.offsetHeight <= picker.options.appendTo.clientHeight
+        ? window.innerHeight - elRect.bottom
+        : picker.options.appendTo.clientHeight - belowTop
+    const spaceAbove = picker.options.appendTo === document.body ? elRect.top : elOff.top - parentOffset.top
+    const fitsBelow = spaceBelow >= containerH
+    const fitsAbove = spaceAbove >= containerH
 
-    if (!fitsBelow) {
+    // Prefer down. Only drop up when up fits and down doesn't, or when neither fits but
+    // up has more available space.
+    if (!fitsBelow && (fitsAbove || spaceAbove > spaceBelow)) {
       containerTop = aboveTop
       dropDirection = 'up'
     }
