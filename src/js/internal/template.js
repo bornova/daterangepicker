@@ -108,6 +108,26 @@ export function configureContainer(picker, options) {
     picker.container.classList.add('inline')
   }
 
+  if (picker.options.showVertical) {
+    picker.container.classList.add('vertical')
+
+    const cols = Math.min(picker.options.verticalColumns, picker.options.calendarCount)
+
+    if (cols > 1) {
+      picker.container.classList.add('vertical-multi-column')
+
+      const calContainer = picker.container.querySelector('.drp-calendar-container')
+      const rows = Math.ceil(picker.options.calendarCount / cols)
+
+      calContainer.style.setProperty('--drp-vertical-cols', String(cols))
+      calContainer.style.setProperty('--drp-vertical-rows', String(rows))
+    }
+  }
+
+  if (picker.options.wrapCalendars) {
+    picker.container.classList.add('wrap-calendars')
+  }
+
   if (picker.options.autoApply) {
     picker.container.classList.add('auto-apply')
   }
@@ -300,6 +320,8 @@ export function mount(picker) {
 
     picker.options.appendTo.appendChild(picker.container)
   }
+
+  setupFit(picker)
 }
 
 /**
@@ -313,6 +335,9 @@ export function refreshContainer(picker, options = {}) {
     'ltr',
     'rtl',
     'inline',
+    'vertical',
+    'vertical-multi-column',
+    'wrap-calendars',
     'auto-apply',
     'show-cancel',
     'hide-footer',
@@ -326,6 +351,13 @@ export function refreshContainer(picker, options = {}) {
   ]
 
   picker.container.classList.remove(...resetClasses)
+
+  const calContainerEl = picker.container.querySelector('.drp-calendar-container')
+
+  if (calContainerEl) {
+    calContainerEl.style.removeProperty('--drp-vertical-cols')
+    calContainerEl.style.removeProperty('--drp-vertical-rows')
+  }
 
   const newCalCount = Math.max(2, picker.options.calendarCount)
 
@@ -350,4 +382,98 @@ export function refreshContainer(picker, options = {}) {
   if (clearBtn) {
     clearBtn.style.display = picker.options.showClearButton ? '' : 'none'
   }
+
+  if (picker.options.wrapCalendars) {
+    setupFit(picker)
+  } else {
+    teardownFit(picker)
+  }
+}
+
+/**
+ * Sums an element's horizontal padding and border widths.
+ * @param {Element} el
+ * @returns {number}
+ */
+function horizontalFrame(el) {
+  const s = getComputedStyle(el)
+
+  return (
+    parseFloat(s.paddingLeft) +
+    parseFloat(s.paddingRight) +
+    parseFloat(s.borderLeftWidth) +
+    parseFloat(s.borderRightWidth)
+  )
+}
+
+/**
+ * Sizes the calendar container to an exact multiple of one calendar's width so it matches
+ * the number of calendars that fit per row, eliminating trailing whitespace. Used when
+ * `wrapCalendars` is enabled.
+ * @param {DateRangePicker} picker
+ */
+export function fitCalendars(picker) {
+  if (!picker.options.wrapCalendars) return
+
+  const calContainer = picker.container.querySelector('.drp-calendar-container')
+
+  if (!calContainer) return
+
+  const cals = Array.from(calContainer.querySelectorAll('.drp-calendar')).filter((el) => el.offsetParent !== null)
+
+  if (!cals.length) return
+
+  // Measure with the constraint cleared so the parent can dictate the available width.
+  calContainer.style.width = ''
+  picker.container.style.width = ''
+
+  const calStyle = getComputedStyle(cals[0])
+  const calWidth = cals[0].offsetWidth + parseFloat(calStyle.marginLeft) + parseFloat(calStyle.marginRight)
+
+  if (!calWidth) return
+
+  const padX = horizontalFrame(calContainer)
+  const perRow = Math.max(1, Math.min(cals.length, Math.floor((calContainer.clientWidth - padX) / calWidth)))
+  const calsWidth = perRow * calWidth + padX
+
+  calContainer.style.width = `${calsWidth}px`
+  picker.container.style.width = `${calsWidth + horizontalFrame(picker.container)}px`
+}
+
+/**
+ * Sets up a ResizeObserver on the picker's parent so the wrapped calendar container is
+ * re-sized whenever the available width changes. No-op when `wrapCalendars` is disabled.
+ * @param {DateRangePicker} picker
+ */
+export function setupFit(picker) {
+  if (!picker.options.wrapCalendars || typeof ResizeObserver === 'undefined') return
+
+  teardownFit(picker)
+
+  const parent = picker.container.parentElement
+
+  if (!parent) return
+
+  picker._wrapResizeObserver = new ResizeObserver(() => fitCalendars(picker))
+  picker._wrapResizeObserver.observe(parent)
+  requestAnimationFrame(() => fitCalendars(picker))
+}
+
+/**
+ * Disconnects the wrap-mode ResizeObserver and clears any inline width applied by {@link fitCalendars}.
+ * @param {DateRangePicker} picker
+ */
+export function teardownFit(picker) {
+  if (picker._wrapResizeObserver) {
+    picker._wrapResizeObserver.disconnect()
+    picker._wrapResizeObserver = null
+  }
+
+  const calContainer = picker.container.querySelector('.drp-calendar-container')
+
+  if (calContainer) {
+    calContainer.style.width = ''
+  }
+
+  picker.container.style.width = ''
 }
