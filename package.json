@@ -1,6 +1,6 @@
 {
   "name": "@bornova/daterangepicker",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Flexible JavaScript date range picker with time selection, predefined ranges, and localization.",
   "keywords": [
     "daterangepicker",
