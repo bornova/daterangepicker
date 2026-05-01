@@ -32,13 +32,6 @@ const esm = {
 const stripComments = () =>
   terser({ compress: false, mangle: false, format: { beautify: true, indent_level: 2, comments: /^!/ } })
 
-const copyToDocs = (file) => ({
-  name: 'copy-to-docs',
-  writeBundle() {
-    copyFileSync(file, `docs/${file.split('/').pop()}`)
-  }
-})
-
 export default [
   {
     ...browser,
@@ -48,7 +41,7 @@ export default [
   {
     ...browser,
     output: { ...browser.output, file: 'dist/browser/daterangepicker.min.js', sourcemap: true },
-    plugins: [terser({ format: { comments: /^!/ } }), copyToDocs('dist/browser/daterangepicker.min.js')]
+    plugins: [terser({ format: { comments: /^!/ } })]
   },
   {
     ...esm,

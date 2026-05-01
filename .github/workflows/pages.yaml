@@ -26,9 +26,15 @@ jobs:
           node-version: 24
       - run: npm ci
       - run: npm run build
+      - name: Stage site
+        run: |
+          mkdir -p _site
+          cp -r docs/. _site/
+          cp dist/daterangepicker.css _site/daterangepicker.css
+          cp dist/browser/daterangepicker.min.js _site/daterangepicker.min.js
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: docs
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v5
