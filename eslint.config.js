@@ -2,7 +2,7 @@ import globals from 'globals'
 import js from '@eslint/js'
 
 export default [
-  { ignores: ['dist', 'docs/daterangepicker.css', 'docs/daterangepicker.min.js', 'docs/daterangepicker.min.js.map'] },
+  { ignores: ['dist', 'docs/daterangepicker.css', 'docs/daterangepicker.min.js'] },
   js.configs.recommended,
   {
     languageOptions: {
