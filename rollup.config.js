@@ -5,6 +5,7 @@ rmSync('dist', { recursive: true, force: true })
 mkdirSync('dist', { recursive: true })
 
 copyFileSync('src/css/daterangepicker.css', 'dist/daterangepicker.css')
+copyFileSync('src/css/daterangepicker.css', 'docs/daterangepicker.css')
 
 const { name, version } = JSON.parse(readFileSync('./package.json'))
 const banner = `/*!
@@ -31,6 +32,13 @@ const esm = {
 const stripComments = () =>
   terser({ compress: false, mangle: false, format: { beautify: true, indent_level: 2, comments: /^!/ } })
 
+const copyToDocs = (file) => ({
+  name: 'copy-to-docs',
+  writeBundle() {
+    copyFileSync(file, `docs/${file.split('/').pop()}`)
+  }
+})
+
 export default [
   {
     ...browser,
@@ -40,7 +48,7 @@ export default [
   {
     ...browser,
     output: { ...browser.output, file: 'dist/browser/daterangepicker.min.js', sourcemap: true },
-    plugins: [terser({ format: { comments: /^!/ } })]
+    plugins: [terser({ format: { comments: /^!/ } }), copyToDocs('dist/browser/daterangepicker.min.js')]
   },
   {
     ...esm,
