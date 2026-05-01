@@ -5,7 +5,6 @@ rmSync('dist', { recursive: true, force: true })
 mkdirSync('dist', { recursive: true })
 
 copyFileSync('src/css/daterangepicker.css', 'dist/daterangepicker.css')
-copyFileSync('src/css/daterangepicker.css', 'docs/daterangepicker.css')
 
 const { name, version } = JSON.parse(readFileSync('./package.json'))
 const banner = `/*!
