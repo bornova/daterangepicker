@@ -1,7 +1,4 @@
 node_modules/
-
-dist/
 test-results/
 
-docs/daterangepicker.css
-docs/daterangepicker.min.js
+dist/
