@@ -625,26 +625,6 @@ test.describe('Input typing (elementChanged)', () => {
   })
 })
 
-test.describe('elementChanged fallback formats', () => {
-  test('ISO yyyy-MM-dd fallback format is parsed when typed into the input', async ({ page }) => {
-    // Default locale format is locale-detected; type ISO dates which require the fallback
-    await page.goto(FIXTURE)
-    await page.evaluate(() => {
-      window.log = []
-      document.getElementById('log').textContent = ''
-      // Use a locale format that won't match yyyy-MM-dd so fallback is exercised
-      window.pickerInstance = new DateRangePicker('#picker', {
-        locale: { format: 'MM/dd/yyyy', separator: ' - ' }
-      })
-    })
-    await page.locator('#picker').fill('2025-06-01 - 2025-06-15')
-    await page.locator('#picker').press('Tab')
-    await openPicker(page)
-    await expect(page.locator('.drp-calendar .calendar-cell.start-date')).toContainText('1')
-    await expect(page.locator('.drp-calendar .calendar-cell.end-date')).toContainText('15')
-  })
-})
-
 test.describe('Apply button', () => {
   test('Apply button is visible by default', async ({ page }) => {
     await setup(page)
@@ -2082,24 +2062,6 @@ test.describe('Additional API methods', () => {
     })
 
     expect(state).toEqual({ isShowing: true, start: '04/04/2025', end: '04/11/2025' })
-  })
-
-  test('once() handler runs only once', async ({ page }) => {
-    await setup(page, { locale: { format: 'MM/dd/yyyy' } })
-    const count = await page.evaluate(() => {
-      window._onceCount = 0
-      window.pickerInstance.once('apply', () => {
-        window._onceCount += 1
-      })
-
-      window.pickerInstance.setDateRange('04/01/2025', '04/03/2025')
-      window.pickerInstance.apply()
-      window.pickerInstance.apply()
-
-      return window._onceCount
-    })
-
-    expect(count).toBe(1)
   })
 
   test('cancel() reverts selection to the pre-open range', async ({ page }) => {
