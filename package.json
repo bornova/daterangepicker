@@ -1,6 +1,6 @@
 {
   "name": "@bornova/daterangepicker",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Flexible JavaScript date range picker with time selection, predefined ranges, and localization.",
   "keywords": [
     "daterangepicker",
@@ -25,7 +25,7 @@
   },
   "type": "module",
   "types": "./dist/types/DateRangePicker.d.ts",
-  "style": "dist/daterangepicker.css",
+  "style": "./dist/daterangepicker.css",
   "exports": {
     ".": {
       "types": "./dist/types/DateRangePicker.d.ts",
@@ -49,12 +49,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@playwright/test": "^1.59.1",
+    "@playwright/test": "^1.60.0",
     "@rollup/plugin-terser": "^1.0.0",
-    "eslint": "^10.2.1",
-    "globals": "^17.5.0",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0",
     "prettier": "^3.8.3",
-    "rollup": "^4.60.2",
+    "rollup": "^4.60.3",
     "typescript": "^6.0.3"
   }
 }
