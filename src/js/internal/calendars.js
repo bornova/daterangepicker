@@ -6,7 +6,7 @@
  * @returns {object[]}
  */
 export function allCalendars(picker) {
-  return [picker._leftCalendar, ...picker._extraCalendars, picker._rightCalendar]
+  return [picker._state.leftCalendar, ...picker._state.extraCalendars, picker._state.rightCalendar]
 }
 
 /**

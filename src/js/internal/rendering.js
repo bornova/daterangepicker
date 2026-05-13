@@ -131,15 +131,15 @@ export function updateMonths(picker) {
       return
     }
 
-    picker._leftCalendar.month = picker.options.startDate.set({ day: 2 })
+    picker._state.leftCalendar.month = picker.options.startDate.set({ day: 2 })
 
     if (syncCalendars) {
       for (let i = 1; i < allCals.length; i++) {
-        allCals[i].month = picker._leftCalendar.month.plus({ months: i })
+        allCals[i].month = picker._state.leftCalendar.month.plus({ months: i })
       }
     } else {
       for (let i = 1; i < allCals.length - 1; i++) {
-        allCals[i].month = picker._leftCalendar.month.plus({ months: i })
+        allCals[i].month = picker._state.leftCalendar.month.plus({ months: i })
       }
 
       const secondToLast = allCals[allCals.length - 2]
@@ -147,9 +147,9 @@ export function updateMonths(picker) {
         picker.options.endDate.month !== picker.options.startDate.month ||
         picker.options.endDate.year !== picker.options.startDate.year
           ? picker.options.endDate.set({ day: 2 })
-          : picker._leftCalendar.month.plus({ months: allCals.length - 1 })
+          : picker._state.leftCalendar.month.plus({ months: allCals.length - 1 })
 
-      picker._rightCalendar.month =
+      picker._state.rightCalendar.month =
         targetRight.toFormat('yyyy-MM') > secondToLast.month.toFormat('yyyy-MM')
           ? targetRight
           : secondToLast.month.plus({ months: 1 })
@@ -159,18 +159,18 @@ export function updateMonths(picker) {
     const startYM = refDate.toFormat('yyyy-MM')
 
     if (!allYMs.every(Boolean) || !allYMs.some((ym) => ym === startYM)) {
-      picker._leftCalendar.month = refDate.set({ day: 2 })
+      picker._state.leftCalendar.month = refDate.set({ day: 2 })
 
       if (syncCalendars) {
         for (let i = 1; i < allCals.length; i++) {
-          allCals[i].month = picker._leftCalendar.month.plus({ months: i })
+          allCals[i].month = picker._state.leftCalendar.month.plus({ months: i })
         }
       } else {
         for (let i = 1; i < allCals.length - 1; i++) {
-          allCals[i].month = picker._leftCalendar.month.plus({ months: i })
+          allCals[i].month = picker._state.leftCalendar.month.plus({ months: i })
         }
 
-        picker._rightCalendar.month = picker._leftCalendar.month.plus({ months: allCals.length - 1 })
+        picker._state.rightCalendar.month = picker._state.leftCalendar.month.plus({ months: allCals.length - 1 })
       }
     }
   }
@@ -179,15 +179,15 @@ export function updateMonths(picker) {
     picker.options.maxDate &&
     syncCalendars &&
     !picker.options.singleDatePicker &&
-    picker._rightCalendar.month > picker.options.maxDate
+    picker._state.rightCalendar.month > picker.options.maxDate
   ) {
-    picker._rightCalendar.month = picker.options.maxDate.set({ day: 2 })
-    picker._leftCalendar.month = picker.options.maxDate
+    picker._state.rightCalendar.month = picker.options.maxDate.set({ day: 2 })
+    picker._state.leftCalendar.month = picker.options.maxDate
       .set({ day: 2 })
       .minus({ months: picker.options.calendarCount - 1 })
 
     for (let i = 1; i < allCals.length - 1; i++) {
-      allCals[i].month = picker._leftCalendar.month.plus({ months: i })
+      allCals[i].month = picker._state.leftCalendar.month.plus({ months: i })
     }
   }
 }
@@ -202,8 +202,8 @@ export function updateCalendars(picker) {
     const side = picker.options.endDate ? 'left' : 'right'
     const { hour, minute, second } = readTime(picker, side)
 
-    picker._leftCalendar.month = picker._leftCalendar.month.set({ hour, minute, second })
-    picker._rightCalendar.month = picker._rightCalendar.month.set({ hour, minute, second })
+    picker._state.leftCalendar.month = picker._state.leftCalendar.month.set({ hour, minute, second })
+    picker._state.rightCalendar.month = picker._state.rightCalendar.month.set({ hour, minute, second })
   }
 
   for (let i = 0; i < allCalendars(picker).length; i++) {
@@ -214,7 +214,7 @@ export function updateCalendars(picker) {
 
   if (picker.options.endDate != null) {
     markChosenLabel(picker)
-  } else if (picker._customRangeSelected) {
+  } else if (picker._state.customRangeSelected) {
     const lis = picker.container.querySelectorAll('.drp-ranges li')
     const last = lis[lis.length - 1]
 
@@ -480,7 +480,7 @@ export function renderCalendar(picker, sideOrIdx) {
         classes.push('available')
       }
 
-      if (picker._focusedDate && dt.hasSame(picker._focusedDate, 'day') && !classes.includes('off')) {
+      if (picker._state.focusedDate && dt.hasSame(picker._state.focusedDate, 'day') && !classes.includes('off')) {
         classes.push('focused')
       }
 

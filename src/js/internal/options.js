@@ -1,4 +1,4 @@
-import { decodeHtml, getLocaleDateFormat, getFirstDayOfWeek, getWeekdaysMin, getMonthsShort } from './helpers.js'
+import { getLocaleDateFormat, getFirstDayOfWeek, getWeekdaysMin, getMonthsShort } from './helpers.js'
 import { parseDateTime } from './dates.js'
 
 /** @typedef {import('../DateRangePicker.js').default} DateRangePicker */
@@ -223,7 +223,7 @@ export function applyOptions(picker, options) {
     }
 
     if (typeof loc.customRangeLabel === 'string') {
-      picker.options.locale.customRangeLabel = decodeHtml(loc.customRangeLabel)
+      picker.options.locale.customRangeLabel = loc.customRangeLabel
     }
 
     const localeScalarKeys = ['direction', 'firstDay', 'format', 'separator', 'weekLabel']

@@ -12,11 +12,11 @@ export function outsideClick(picker, e) {
 
   // Guard against the click event that triggered show() immediately bubbling up
   // to the document listener and closing the picker that was just opened.
-  if (picker._showTime && Date.now() - picker._showTime < 50) return
+  if (picker._state.showTime && Date.now() - picker._state.showTime < 50) return
 
   // Record when the close happened so show() can guard against immediately
   // reopening when an external toggle button calls toggle().
-  picker._outsideClickTime = Date.now()
+  picker._state.outsideClickTime = Date.now()
 
   dismiss(picker)
 }

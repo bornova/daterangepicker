@@ -1,19 +1,6 @@
 import { Info } from 'luxon'
 
 /**
- * Decodes HTML entities in a string by routing it through a temporary `<textarea>`.
- * @param {string} str
- * @returns {string}
- */
-export function decodeHtml(str) {
-  const ta = document.createElement('textarea')
-
-  ta.innerHTML = str
-
-  return ta.value
-}
-
-/**
  * Escapes `&`, `<`, `>`, and `"` for safe HTML attribute and text content insertion.
  * @param {string} str
  * @returns {string}

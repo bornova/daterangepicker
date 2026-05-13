@@ -14,7 +14,7 @@ import { dismiss } from './dismiss.js'
  * @param {KeyboardEvent} e
  */
 export function onKeyNav(picker, e) {
-  if (!picker._isShowing) return
+  if (!picker._state.isShowing) return
   if (!picker.container.contains(document.activeElement)) return
   if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return
 
@@ -34,8 +34,8 @@ export function onKeyNav(picker, e) {
 
   e.preventDefault()
 
-  if (!picker._focusedDate) {
-    picker._focusedDate = picker.options.startDate ?? DateTime.now()
+  if (!picker._state.focusedDate) {
+    picker._state.focusedDate = picker.options.startDate ?? DateTime.now()
   }
 
   if (e.key === 'Enter') {
@@ -46,22 +46,22 @@ export function onKeyNav(picker, e) {
 
   switch (e.key) {
     case 'ArrowLeft':
-      picker._focusedDate = picker._focusedDate.minus({ days: 1 })
+      picker._state.focusedDate = picker._state.focusedDate.minus({ days: 1 })
       break
     case 'ArrowRight':
-      picker._focusedDate = picker._focusedDate.plus({ days: 1 })
+      picker._state.focusedDate = picker._state.focusedDate.plus({ days: 1 })
       break
     case 'ArrowUp':
-      picker._focusedDate = picker._focusedDate.minus({ weeks: 1 })
+      picker._state.focusedDate = picker._state.focusedDate.minus({ weeks: 1 })
       break
     case 'ArrowDown':
-      picker._focusedDate = picker._focusedDate.plus({ weeks: 1 })
+      picker._state.focusedDate = picker._state.focusedDate.plus({ weeks: 1 })
       break
     case 'PageUp':
-      picker._focusedDate = picker._focusedDate.minus({ months: 1 })
+      picker._state.focusedDate = picker._state.focusedDate.minus({ months: 1 })
       break
     case 'PageDown':
-      picker._focusedDate = picker._focusedDate.plus({ months: 1 })
+      picker._state.focusedDate = picker._state.focusedDate.plus({ months: 1 })
       break
   }
 
@@ -72,7 +72,7 @@ export function onKeyNav(picker, e) {
 /** Simulates a click on the currently focused calendar date cell.
  *  @param {DateRangePicker} picker */
 export function selectFocused(picker) {
-  const fd = picker._focusedDate
+  const fd = picker._state.focusedDate
 
   if (!fd) return
 
@@ -106,7 +106,7 @@ export function selectFocused(picker) {
 /** Shifts the visible calendar months so the focused date is in view.
  *  @param {DateRangePicker} picker */
 export function revealFocused(picker) {
-  const fd = picker._focusedDate
+  const fd = picker._state.focusedDate
 
   if (!fd) return
 

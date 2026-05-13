@@ -2,16 +2,24 @@
 
 /**
  * Initializes runtime flags and calendar state containers on the picker instance.
+ * All internal state is stored in a single non-enumerable `_state` object so it is
+ * hidden from serialization and property enumeration.
  * @param {DateRangePicker} picker
  */
 export function initState(picker) {
-  picker._focusedDate = null
-  picker._listeners = []
-  picker._hasPendingUnappliedSelection = false
-  picker._skipCommitOnHide = false
-  picker._isShowing = false
-  picker._leftCalendar = {}
-  picker._rightCalendar = {}
+  Object.defineProperty(picker, '_state', {
+    value: {
+      focusedDate: null,
+      listeners: [],
+      hasPendingUnappliedSelection: false,
+      skipCommitOnHide: false,
+      isShowing: false,
+      leftCalendar: {},
+      rightCalendar: {}
+    },
+    enumerable: false,
+    configurable: true
+  })
 }
 
 /**

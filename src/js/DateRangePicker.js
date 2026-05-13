@@ -56,10 +56,10 @@ class DateRangePicker {
 
     const calCount = Math.max(2, this.options.calendarCount)
 
-    this._extraCalendars = Array.from({ length: calCount - 2 }, () => ({}))
     buildContainer(this, options, calCount)
     initRanges(this, options)
     initState(this)
+    this._state.extraCalendars = Array.from({ length: calCount - 2 }, () => ({}))
     initDates(this)
     configureContainer(this, options)
     bindHandlers(this)
@@ -103,7 +103,7 @@ class DateRangePicker {
       this.options.endDate = this.options.startDate
     }
 
-    if (!this._isShowing) {
+    if (!this._state.isShowing) {
       this.updateInput()
     }
 
@@ -132,7 +132,7 @@ class DateRangePicker {
       } else {
         this.options.endDate = this.options.startDate
 
-        if (!this._isShowing) {
+        if (!this._state.isShowing) {
           this.updateInput()
         }
 
@@ -178,7 +178,7 @@ class DateRangePicker {
 
     updateSelected(this)
 
-    if (!this._isShowing) {
+    if (!this._state.isShowing) {
       this.updateInput()
     }
 
@@ -197,7 +197,7 @@ class DateRangePicker {
     this.setStartDate(startDate)
     this.setEndDate(endDate)
 
-    if (this._isShowing) {
+    if (this._state.isShowing) {
       updateView(this)
     }
   }
@@ -254,30 +254,30 @@ class DateRangePicker {
    * No-op when already open or when `showInline: true` already keeps it visible.
    */
   show() {
-    if (this._isShowing) return
+    if (this._state.isShowing) return
 
     // If outsideClick just closed the picker (mousedown on an external toggle button
     // fires before its click handler), don't reopen within the same interaction window.
-    if (this._outsideClickTime && Date.now() - this._outsideClickTime < 200) return
+    if (this._state.outsideClickTime && Date.now() - this._state.outsideClickTime < 200) return
 
-    if (!this._hasPendingUnappliedSelection) {
-      this._oldStartDate = this.options.startDate
-      this._oldEndDate = this.options.endDate
+    if (!this._state.hasPendingUnappliedSelection) {
+      this._state.oldStartDate = this.options.startDate
+      this._state.oldEndDate = this.options.endDate
     }
 
-    this._oldInputValue = this.element.matches('input') ? this.element.value : null
-    this._focusedDate = this.options.startDate
-    this._openedWithEmptyInput = this.element.matches('input') && this.element.value === ''
+    this._state.oldInputValue = this.element.matches('input') ? this.element.value : null
+    this._state.focusedDate = this.options.startDate
+    this._state.openedWithEmptyInput = this.element.matches('input') && this.element.value === ''
 
     if (this.options.showInline) {
       this.container.classList.add('show-calendar')
-      document.addEventListener('keydown', this._keyboardNavProxy)
+      document.addEventListener('keydown', this._state.keyboardNavProxy)
       updateView(this)
       this.container.setAttribute('aria-hidden', 'false')
       this.container.focus({ preventScroll: true })
-      this._showTime = Date.now()
+      this._state.showTime = Date.now()
       trigger(this, 'show', this)
-      this._isShowing = true
+      this._state.isShowing = true
 
       if (this.options.wrapCalendars) {
         requestAnimationFrame(() => fitCalendars(this))
@@ -287,16 +287,16 @@ class DateRangePicker {
     }
 
     toggleListeners(this, true)
-    document.addEventListener('keydown', this._keyboardNavProxy)
+    document.addEventListener('keydown', this._state.keyboardNavProxy)
 
     updateView(this)
     this.container.style.display = 'block'
     this.container.setAttribute('aria-hidden', 'false')
     move(this)
     this.container.focus({ preventScroll: true })
-    this._showTime = Date.now()
+    this._state.showTime = Date.now()
     trigger(this, 'show', this)
-    this._isShowing = true
+    this._state.isShowing = true
 
     if (this.options.wrapCalendars) {
       requestAnimationFrame(() => fitCalendars(this))
@@ -312,39 +312,39 @@ class DateRangePicker {
    * No-op when the picker is not currently open.
    */
   hide() {
-    if (!this._isShowing) return
+    if (!this._state.isShowing) return
 
-    if (!this.options.endDate && !this._skipCommitOnHide) {
-      this.options.startDate = this._oldStartDate
-      this.options.endDate = this._oldEndDate
-      this._hasPendingUnappliedSelection = false
+    if (!this.options.endDate && !this._state.skipCommitOnHide) {
+      this.options.startDate = this._state.oldStartDate
+      this.options.endDate = this._state.oldEndDate
+      this._state.hasPendingUnappliedSelection = false
     }
 
     const changedSinceOpen =
-      !!this.options.endDate && rangeChanged(this, this._oldStartDate ?? null, this._oldEndDate ?? null)
+      !!this.options.endDate && rangeChanged(this, this._state.oldStartDate ?? null, this._state.oldEndDate ?? null)
 
-    const committing = this._skipCommitOnHide ? false : this.options.autoApply || this._commitOnHide
-    const commitSource = this._commitOnHide ? 'apply' : 'autoApply'
+    const committing = this._state.skipCommitOnHide ? false : this.options.autoApply || this._state.commitOnHide
+    const commitSource = this._state.commitOnHide ? 'apply' : 'autoApply'
 
-    this._commitOnHide = false
-    this._skipCommitOnHide = false
+    this._state.commitOnHide = false
+    this._state.skipCommitOnHide = false
 
     if (committing) {
-      this._hasPendingUnappliedSelection = false
-      commit(this, this._oldStartDate ?? null, this._oldEndDate ?? null, commitSource, {
+      this._state.hasPendingUnappliedSelection = false
+      commit(this, this._state.oldStartDate ?? null, this._state.oldEndDate ?? null, commitSource, {
         callbackOnChangedOnly: true
       })
-    } else if (this._openedWithEmptyInput) {
+    } else if (this._state.openedWithEmptyInput) {
       if (this.element.matches('input')) this.element.value = ''
     }
 
     if (!committing && changedSinceOpen) {
-      this._hasPendingUnappliedSelection = true
+      this._state.hasPendingUnappliedSelection = true
     }
 
     if (this.options.showInline) {
-      this._oldStartDate = this.options.startDate
-      this._oldEndDate = this.options.endDate
+      this._state.oldStartDate = this.options.startDate
+      this._state.oldEndDate = this.options.endDate
       updateView(this)
 
       return
@@ -355,17 +355,17 @@ class DateRangePicker {
     }
 
     toggleListeners(this, false)
-    document.removeEventListener('keydown', this._keyboardNavProxy)
-    this._focusedDate = null
+    document.removeEventListener('keydown', this._state.keyboardNavProxy)
+    this._state.focusedDate = null
     this.container.style.display = 'none'
     this.container.setAttribute('aria-hidden', 'true')
     trigger(this, 'hide', this)
-    this._isShowing = false
+    this._state.isShowing = false
   }
 
   /** Toggles the picker between {@link DateRangePicker#show} and {@link DateRangePicker#hide}. */
   toggle() {
-    if (this._isShowing) {
+    if (this._state.isShowing) {
       this.hide()
     } else {
       this.show()
@@ -435,7 +435,7 @@ class DateRangePicker {
     refreshContainer(this, options)
     updateView(this)
 
-    if (this._isShowing && !this.options.showInline) {
+    if (this._state.isShowing && !this.options.showInline) {
       move(this)
     }
   }
@@ -462,41 +462,23 @@ class DateRangePicker {
       fn(startDate, endDate, chosenLabel)
     }
 
-    this._listeners.push({ event, fn, wrapper })
+    this._state.listeners.push({ event, fn, wrapper })
     this.element.addEventListener(event, wrapper)
   }
 
   /**
-   * Like {@link DateRangePicker#on}, but the listener is removed automatically after the
-   * first invocation.
-   *
-   * @param {PickerEventName} event
-   * @param {(startDate: object|null, endDate: object|null, chosenLabel: string|null) => void} fn
-   */
-  once(event, fn) {
-    const onceHandler = (...args) => {
-      this.off(event, fn)
-      fn(...args)
-    }
-
-    this.on(event, onceHandler)
-    // Replace the stored fn key with the original so off(event, fn) can find it
-    this._listeners[this._listeners.length - 1].fn = fn
-  }
-
-  /**
-   * Removes a listener previously registered with {@link DateRangePicker#on} or
-   * {@link DateRangePicker#once}. Pass the same `event` and `fn` reference used when subscribing.
+   * Removes a listener previously registered with {@link DateRangePicker#on}.
+   * Pass the same `event` and `fn` reference used when subscribing.
    *
    * @param {PickerEventName} event
    * @param {Function} fn
    */
   off(event, fn) {
-    const idx = this._listeners.findIndex((l) => l.event === event && l.fn === fn)
+    const idx = this._state.listeners.findIndex((l) => l.event === event && l.fn === fn)
 
     if (idx !== -1) {
-      this.element.removeEventListener(event, this._listeners[idx].wrapper)
-      this._listeners.splice(idx, 1)
+      this.element.removeEventListener(event, this._state.listeners[idx].wrapper)
+      this._state.listeners.splice(idx, 1)
     }
   }
 
@@ -518,23 +500,23 @@ class DateRangePicker {
 
     detachHandlers(this)
 
-    document.removeEventListener('keydown', this._keyboardNavProxy)
+    document.removeEventListener('keydown', this._state.keyboardNavProxy)
 
-    if (this._elementShowHandler) {
-      this.element.removeEventListener('click', this._elementShowHandler)
-      this.element.removeEventListener('focus', this._elementShowHandler)
-      this.element.removeEventListener('keyup', this._elementChangedHandler)
-      this.element.removeEventListener('keydown', this._elementKeydownHandler)
-    } else if (this._elementToggleHandler) {
-      this.element.removeEventListener('click', this._elementToggleHandler)
-      this.element.removeEventListener('keydown', this._elementKeydownHandler)
+    if (this._state.elementShowHandler) {
+      this.element.removeEventListener('click', this._state.elementShowHandler)
+      this.element.removeEventListener('focus', this._state.elementShowHandler)
+      this.element.removeEventListener('keyup', this._state.elementChangedHandler)
+      this.element.removeEventListener('keydown', this._state.elementKeydownHandler)
+    } else if (this._state.elementToggleHandler) {
+      this.element.removeEventListener('click', this._state.elementToggleHandler)
+      this.element.removeEventListener('keydown', this._state.elementKeydownHandler)
     }
 
-    this._listeners.forEach((l) => {
+    this._state.listeners.forEach((l) => {
       this.element.removeEventListener(l.event, l.wrapper)
     })
 
-    this._listeners = []
+    this._state.listeners = []
   }
 }
 

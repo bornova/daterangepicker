@@ -55,15 +55,15 @@ export function clickNext(picker, e) {
 export function clickRange(picker, e) {
   const label = e.target.getAttribute('data-range-key')
 
-  picker._chosenLabel = label
+  picker._state.chosenLabel = label
 
   if (label === picker.options.locale.customRangeLabel) {
-    picker._customRangeSelected = true
+    picker._state.customRangeSelected = true
     picker.container.querySelectorAll('.drp-ranges li').forEach((el) => el.classList.remove('active'))
     e.target.classList.add('active')
     showCalendars(picker)
   } else {
-    picker._customRangeSelected = false
+    picker._state.customRangeSelected = false
     let [start, end] = picker.options.ranges[label]
 
     if (!picker.options.showTimePicker) {
@@ -92,7 +92,7 @@ export function clickDate(picker, e) {
 
   if (!date) return
 
-  picker._focusedDate = date
+  picker._state.focusedDate = date
 
   const withinMinSpan =
     !picker.options.endDate &&
@@ -129,7 +129,7 @@ export function clickDate(picker, e) {
 
     picker.setEndDate(date)
 
-    picker._focusedDate = picker.options.startDate
+    picker._state.focusedDate = picker.options.startDate
 
     if (picker.options.autoApply) {
       markChosenLabel(picker)
@@ -212,25 +212,25 @@ export function hoverDate(picker, e) {
  * @param {DateRangePicker} picker
  */
 export function clickApply(picker) {
-  const oldStartDate = picker._oldStartDate
-  const oldEndDate = picker._oldEndDate
+  const oldStartDate = picker._state.oldStartDate
+  const oldEndDate = picker._state.oldEndDate
 
-  picker._openedWithEmptyInput = false
-  picker._customRangeSelected = false
-  picker._hasPendingUnappliedSelection = false
+  picker._state.openedWithEmptyInput = false
+  picker._state.customRangeSelected = false
+  picker._state.hasPendingUnappliedSelection = false
 
   trigger(picker, 'apply', {
     startDate: picker.options.startDate,
     endDate: picker.options.endDate,
-    chosenLabel: picker._chosenLabel
+    chosenLabel: picker._state.chosenLabel
   })
 
   if (picker.options.closeOnApply) {
-    picker._commitOnHide = true
+    picker._state.commitOnHide = true
     picker.hide()
   } else {
-    picker._oldStartDate = picker.options.startDate
-    picker._oldEndDate = picker.options.endDate
+    picker._state.oldStartDate = picker.options.startDate
+    picker._state.oldEndDate = picker.options.endDate
 
     commit(picker, oldStartDate ?? null, oldEndDate ?? null, 'apply', {
       callbackOnChangedOnly: false
@@ -244,15 +244,15 @@ export function clickApply(picker) {
  * @param {DateRangePicker} picker
  */
 export function clickCancel(picker) {
-  picker.options.startDate = picker._oldStartDate
-  picker.options.endDate = picker._oldEndDate
-  picker._hasPendingUnappliedSelection = false
+  picker.options.startDate = picker._state.oldStartDate
+  picker.options.endDate = picker._state.oldEndDate
+  picker._state.hasPendingUnappliedSelection = false
 
   const shouldRestoreInput = picker.options.autoUpdateInput && picker.element.matches('input')
-  const oldInputValue = picker._oldInputValue ?? ''
+  const oldInputValue = picker._state.oldInputValue ?? ''
 
   if (picker.options.closeOnCancel) {
-    if (picker._openedWithEmptyInput) {
+    if (picker._state.openedWithEmptyInput) {
       const prev = picker.options.autoUpdateInput
 
       picker.options.autoUpdateInput = false
@@ -285,7 +285,7 @@ export function clickCancel(picker) {
 export function clickClear(picker) {
   picker.options.startDate = null
   picker.options.endDate = null
-  picker._focusedDate = null
+  picker._state.focusedDate = null
 
   if (picker.options.showTimePicker) {
     picker.container.querySelectorAll('.calendar-time').forEach((el) => {
@@ -296,9 +296,9 @@ export function clickClear(picker) {
   const prev = picker.options.autoUpdateInput
 
   picker.options.autoUpdateInput = false
-  picker._commitOnHide = false
-  picker._skipCommitOnHide = true
-  picker._hasPendingUnappliedSelection = false
+  picker._state.commitOnHide = false
+  picker._state.skipCommitOnHide = true
+  picker._state.hasPendingUnappliedSelection = false
   picker.hide()
   picker.options.autoUpdateInput = prev
 

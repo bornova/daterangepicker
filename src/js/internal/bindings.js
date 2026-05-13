@@ -25,12 +25,12 @@ import { updateCalendars } from './rendering.js'
  * @type {Array<[string, string, AddEventListenerOptions?]>}
  */
 const CONTAINER_HANDLERS = [
-  ['click', '_containerClickHandler'],
-  ['mousedown', '_containerMousedownHandler'],
-  ['mouseover', '_containerMouseoverHandler'],
-  ['change', '_containerChangeHandler'],
-  ['touchstart', '_containerTouchStartHandler', { passive: true }],
-  ['touchend', '_containerTouchEndHandler']
+  ['click', 'containerClickHandler'],
+  ['mousedown', 'containerMousedownHandler'],
+  ['mouseover', 'containerMouseoverHandler'],
+  ['change', 'containerChangeHandler'],
+  ['touchstart', 'containerTouchStartHandler', { passive: true }],
+  ['touchend', 'containerTouchEndHandler']
 ]
 
 /**
@@ -39,10 +39,10 @@ const CONTAINER_HANDLERS = [
  * @param {DateRangePicker} picker
  */
 export function bindHandlers(picker) {
-  picker._outsideClickProxy = (e) => outsideClick(picker, e)
-  picker._windowResizeProxy = () => move(picker)
+  picker._state.outsideClickProxy = (e) => outsideClick(picker, e)
+  picker._state.windowResizeProxy = () => move(picker)
 
-  picker._containerClickHandler = (e) => {
+  picker._state.containerClickHandler = (e) => {
     if (e.target.closest('.prev')) clickPrev(picker, e)
     else if (e.target.closest('.next')) clickNext(picker, e)
     else if (e.target.closest('.drp-ranges li:not(.range-group-header)')) clickRange(picker, e)
@@ -51,7 +51,7 @@ export function bindHandlers(picker) {
     else if (e.target.closest('button.drp-clear-button')) clickClear(picker, e)
   }
 
-  picker._containerMousedownHandler = (e) => {
+  picker._state.containerMousedownHandler = (e) => {
     const cell = e.target.closest('.calendar-cell.available')
 
     if (cell) {
@@ -59,7 +59,7 @@ export function bindHandlers(picker) {
     }
   }
 
-  picker._containerMouseoverHandler = (e) => {
+  picker._state.containerMouseoverHandler = (e) => {
     const cell = e.target.closest('.calendar-cell.available')
 
     if (cell) {
@@ -67,7 +67,7 @@ export function bindHandlers(picker) {
     }
   }
 
-  picker._containerChangeHandler = (e) => {
+  picker._state.containerChangeHandler = (e) => {
     if (e.target.matches('select.yearselect, select.monthselect')) {
       changeMonthOrYear(picker, e)
     } else if (e.target.matches('select.hourselect, select.minuteselect, select.secondselect, select.ampmselect')) {
@@ -75,17 +75,17 @@ export function bindHandlers(picker) {
     }
   }
 
-  picker._touchStartX = 0
-  picker._touchStartY = 0
+  picker._state.touchStartX = 0
+  picker._state.touchStartY = 0
 
-  picker._containerTouchStartHandler = (e) => {
-    picker._touchStartX = e.touches[0].clientX
-    picker._touchStartY = e.touches[0].clientY
+  picker._state.containerTouchStartHandler = (e) => {
+    picker._state.touchStartX = e.touches[0].clientX
+    picker._state.touchStartY = e.touches[0].clientY
   }
 
-  picker._containerTouchEndHandler = (e) => {
-    const dx = e.changedTouches[0].clientX - picker._touchStartX
-    const dy = e.changedTouches[0].clientY - picker._touchStartY
+  picker._state.containerTouchEndHandler = (e) => {
+    const dx = e.changedTouches[0].clientX - picker._state.touchStartX
+    const dy = e.changedTouches[0].clientY - picker._state.touchStartY
 
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
       const months = dx > 0 ? -1 : 1
@@ -97,9 +97,9 @@ export function bindHandlers(picker) {
           c.month = c.month.plus({ months })
         })
       } else if (dx > 0) {
-        picker._leftCalendar.month = picker._leftCalendar.month.minus({ months: 1 })
+        picker._state.leftCalendar.month = picker._state.leftCalendar.month.minus({ months: 1 })
       } else {
-        picker._rightCalendar.month = picker._rightCalendar.month.plus({ months: 1 })
+        picker._state.rightCalendar.month = picker._state.rightCalendar.month.plus({ months: 1 })
       }
 
       clampCalendarMonths(picker)
@@ -108,7 +108,7 @@ export function bindHandlers(picker) {
     }
   }
 
-  picker._keyboardNavProxy = (e) => onKeyNav(picker, e)
+  picker._state.keyboardNavProxy = (e) => onKeyNav(picker, e)
 }
 
 /**
@@ -117,7 +117,7 @@ export function bindHandlers(picker) {
  */
 export function attachHandlers(picker) {
   CONTAINER_HANDLERS.forEach(([event, prop, opts]) => {
-    picker.container.addEventListener(event, picker[prop], opts)
+    picker.container.addEventListener(event, picker._state[prop], opts)
   })
 }
 
@@ -127,7 +127,7 @@ export function attachHandlers(picker) {
  */
 export function detachHandlers(picker) {
   CONTAINER_HANDLERS.forEach(([event, prop]) => {
-    picker.container.removeEventListener(event, picker[prop])
+    picker.container.removeEventListener(event, picker._state[prop])
   })
 }
 
@@ -140,8 +140,8 @@ export function detachHandlers(picker) {
 export function toggleListeners(picker, on) {
   const fn = on ? 'addEventListener' : 'removeEventListener'
 
-  document[fn]('mousedown', picker._outsideClickProxy)
-  document[fn]('touchend', picker._outsideClickProxy)
-  window[fn]('resize', picker._windowResizeProxy)
-  window[fn]('scroll', picker._windowResizeProxy, true)
+  document[fn]('mousedown', picker._state.outsideClickProxy)
+  document[fn]('touchend', picker._state.outsideClickProxy)
+  window[fn]('resize', picker._state.windowResizeProxy)
+  window[fn]('scroll', picker._state.windowResizeProxy, true)
 }

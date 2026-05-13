@@ -1,4 +1,4 @@
-import { decodeHtml, escapeHtml, addClasses } from './helpers.js'
+import { escapeHtml, addClasses } from './helpers.js'
 import { parseDateTime } from './dates.js'
 import { parseInput, onElementKey } from './input.js'
 
@@ -243,21 +243,17 @@ export function initRanges(picker, options) {
       return
     }
 
-    const decodedLabel = decodeHtml(label)
-
-    picker.options.ranges[decodedLabel] = [start, end]
-    groupedItems.push({ group, label: decodedLabel })
+    picker.options.ranges[label] = [start, end]
+    groupedItems.push({ group, label })
   }
 
   for (const [key, val] of Object.entries(options.ranges)) {
     if (Array.isArray(val)) {
       processRange(key, val, null)
     } else if (typeof val === 'object' && val !== null) {
-      const groupName = decodeHtml(key)
-
       for (const [rangeName, rangeDates] of Object.entries(val)) {
         if (Array.isArray(rangeDates)) {
-          processRange(rangeName, rangeDates, groupName)
+          processRange(rangeName, rangeDates, key)
         }
       }
     }
@@ -304,18 +300,18 @@ export function mount(picker) {
     picker.show()
   } else {
     if (picker.element.matches('input, button')) {
-      picker._elementShowHandler = () => picker.show()
-      picker._elementChangedHandler = (e) => parseInput(picker, e)
-      picker._elementKeydownHandler = (e) => onElementKey(picker, e)
-      picker.element.addEventListener('click', picker._elementShowHandler)
-      picker.element.addEventListener('focus', picker._elementShowHandler)
-      picker.element.addEventListener('keyup', picker._elementChangedHandler)
-      picker.element.addEventListener('keydown', picker._elementKeydownHandler)
+      picker._state.elementShowHandler = () => picker.show()
+      picker._state.elementChangedHandler = (e) => parseInput(picker, e)
+      picker._state.elementKeydownHandler = (e) => onElementKey(picker, e)
+      picker.element.addEventListener('click', picker._state.elementShowHandler)
+      picker.element.addEventListener('focus', picker._state.elementShowHandler)
+      picker.element.addEventListener('keyup', picker._state.elementChangedHandler)
+      picker.element.addEventListener('keydown', picker._state.elementKeydownHandler)
     } else {
-      picker._elementToggleHandler = () => picker.toggle()
-      picker._elementKeydownHandler = () => picker.toggle()
-      picker.element.addEventListener('click', picker._elementToggleHandler)
-      picker.element.addEventListener('keydown', picker._elementKeydownHandler)
+      picker._state.elementToggleHandler = () => picker.toggle()
+      picker._state.elementKeydownHandler = () => picker.toggle()
+      picker.element.addEventListener('click', picker._state.elementToggleHandler)
+      picker.element.addEventListener('keydown', picker._state.elementKeydownHandler)
     }
 
     picker.options.appendTo.appendChild(picker.container)
@@ -361,7 +357,7 @@ export function refreshContainer(picker, options = {}) {
 
   const newCalCount = Math.max(2, picker.options.calendarCount)
 
-  picker._extraCalendars = Array.from({ length: newCalCount - 2 }, () => ({}))
+  picker._state.extraCalendars = Array.from({ length: newCalCount - 2 }, () => ({}))
 
   const leftCal = picker.container.querySelector('.drp-calendar.left')
   const rightCal = picker.container.querySelector('.drp-calendar.right')
@@ -454,8 +450,8 @@ export function setupFit(picker) {
 
   if (!parent) return
 
-  picker._wrapResizeObserver = new ResizeObserver(() => fitCalendars(picker))
-  picker._wrapResizeObserver.observe(parent)
+  picker._state.wrapResizeObserver = new ResizeObserver(() => fitCalendars(picker))
+  picker._state.wrapResizeObserver.observe(parent)
   requestAnimationFrame(() => fitCalendars(picker))
 }
 
@@ -464,9 +460,9 @@ export function setupFit(picker) {
  * @param {DateRangePicker} picker
  */
 export function teardownFit(picker) {
-  if (picker._wrapResizeObserver) {
-    picker._wrapResizeObserver.disconnect()
-    picker._wrapResizeObserver = null
+  if (picker._state.wrapResizeObserver) {
+    picker._state.wrapResizeObserver.disconnect()
+    picker._state.wrapResizeObserver = null
   }
 
   const calContainer = picker.container.querySelector('.drp-calendar-container')

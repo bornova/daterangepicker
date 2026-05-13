@@ -10,14 +10,14 @@ import { showCalendars } from './positioning.js'
  */
 export function markChosenLabel(picker) {
   if (!Object.keys(picker.options.ranges).length) {
-    picker._chosenLabel = null
+    picker._state.chosenLabel = null
 
     return
   }
 
   const granularity = picker.options.showTimePicker ? (picker.options.timePickerSeconds ? 'second' : 'minute') : 'day'
 
-  if (!picker._customRangeSelected) {
+  if (!picker._state.customRangeSelected) {
     for (const [range, [rangeStart, rangeEnd]] of Object.entries(picker.options.ranges)) {
       if (
         picker.options.startDate.hasSame(rangeStart, granularity) &&
@@ -27,7 +27,7 @@ export function markChosenLabel(picker) {
 
         if (li) {
           li.classList.add('active')
-          picker._chosenLabel = li.getAttribute('data-range-key')
+          picker._state.chosenLabel = li.getAttribute('data-range-key')
         }
 
         return
@@ -41,12 +41,12 @@ export function markChosenLabel(picker) {
 
     if (last) {
       last.classList.add('active')
-      picker._chosenLabel = last.getAttribute('data-range-key')
+      picker._state.chosenLabel = last.getAttribute('data-range-key')
     } else {
-      picker._chosenLabel = null
+      picker._state.chosenLabel = null
     }
   } else {
-    picker._chosenLabel = null
+    picker._state.chosenLabel = null
   }
 
   showCalendars(picker)
@@ -107,7 +107,7 @@ export function emitChange(picker, oldStartDate, oldEndDate, source = 'apply') {
     oldEndDate,
     startDate: picker.options.startDate ?? null,
     endDate: picker.options.endDate ?? null,
-    chosenLabel: picker._chosenLabel ?? null,
+    chosenLabel: picker._state.chosenLabel ?? null,
     source
   })
 
@@ -128,10 +128,10 @@ export function commit(picker, oldStartDate, oldEndDate, source = 'apply', optio
   const changed = rangeChanged(picker, oldStartDate ?? null, oldEndDate ?? null)
 
   if (hasRange && (!callbackOnChangedOnly || changed)) {
-    picker.callback(picker.options.startDate, picker.options.endDate, picker._chosenLabel)
+    picker.callback(picker.options.startDate, picker.options.endDate, picker._state.chosenLabel)
   }
 
-  if (picker._openedWithEmptyInput) {
+  if (picker._state.openedWithEmptyInput) {
     if (picker.element.matches('input')) {
       picker.element.value = ''
     }
@@ -149,9 +149,9 @@ export function commit(picker, oldStartDate, oldEndDate, source = 'apply', optio
  */
 export function snapshot(picker) {
   return {
-    isShowing: picker._isShowing,
+    isShowing: picker._state.isShowing,
     startDate: picker.options.startDate ?? null,
     endDate: picker.options.endDate ?? null,
-    chosenLabel: picker._chosenLabel ?? null
+    chosenLabel: picker._state.chosenLabel ?? null
   }
 }
