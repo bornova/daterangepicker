@@ -60,7 +60,6 @@ h1 .scope {
   display: inline-flex;
   flex-shrink: 0;
   justify-content: center;
-  align-items: center;
   gap: 6px;
   transition:
     background 0.15s,
@@ -73,6 +72,7 @@ h1 .scope {
   padding: 5px 10px;
   color: light-dark(#374151, #d1d5db);
   font-size: 12px;
+  line-height: 1;
   font-family: inherit;
   text-decoration: none;
 }
